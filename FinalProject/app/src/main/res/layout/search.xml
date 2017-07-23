@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_search"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBackground"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:weightSum="1"
+    tools:context="itp341.mathur.eshita.finalproject.LoginActivity">
+
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="340dp"
+        android:layout_height="214dp"
+        android:layout_gravity="center"
+        android:src="@drawable/logomunch"
+        />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="39dp"
+            android:textColor="@color/colorWhite"
+            android:fontFamily="sans-serif"
+            android:text="Search"
+            android:paddingRight="35dp"
+            android:textSize="22sp" />
+
+        <EditText
+            android:id="@+id/address"
+            android:layout_width="236dp"
+            android:layout_height="62dp"
+            android:background="@color/colorWhite"
+            android:hint="zipcode or city"
+            android:fontFamily="sans-serif" />
+    </LinearLayout>
+
+
+    <Button
+        android:text="SUBMIT"
+        android:textColor="@color/colorWhite"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/searchSubmitButton"
+        style="@style/Widget.AppCompat.Button"
+        android:textStyle="normal|bold" />
+
+</LinearLayout>
