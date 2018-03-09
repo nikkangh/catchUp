@@ -49,9 +49,6 @@ public class FoodBankActivity extends AppCompatActivity {
     private TextView textLanguage;
 
     private RequestQueue queue;
-    private ArrayAdapter<String> adapterc;
-    private ArrayAdapter<String> adapterl;
-    private ArrayAdapter<String> adapterp;
     private CustomAdapter adapter;
     private ArrayList<String> names;
     private ArrayList<String> locations;
@@ -93,14 +90,6 @@ public class FoodBankActivity extends AppCompatActivity {
         names = new ArrayList<>();
         locations = new ArrayList<>();
         prices = new ArrayList<>();
-        /*adapter = new ArrayAdapter<>(
-                this,
-                R.layout.list_item,
-                names);
-        listCountries.setAdapter(adapter);*/
-        //adapter = new ArrayAdapter<String>(this, R.layout.list_item,R.id.name,names);
-        //adapterl = new ArrayAdapter<String>(this, R.layout.list_item,R.id.location,locations);
-        //adapterp = new ArrayAdapter<String>(this, R.layout.list_item,R.id.price,prices);
         adapter = new CustomAdapter(this,names);
         listCountries.setAdapter(adapter);
 
@@ -109,7 +98,7 @@ public class FoodBankActivity extends AppCompatActivity {
         queue = Volley.newRequestQueue(this);
         requestJSONParse(url);
 
-        listCountries.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        /*listCountries.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
                 // we know a row was clicked but we need to know WHERE specifically
@@ -117,7 +106,7 @@ public class FoodBankActivity extends AppCompatActivity {
                 Intent i = new Intent(getApplicationContext(), BankInfoActivity.class);
                 startActivity(i);
             }
-        });
+        });*/
 
 
     }
