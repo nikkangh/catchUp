@@ -23,6 +23,7 @@
         <activity android:name="itp341.mathur.eshita.finalproject.FoodBankActivity"/>
         <activity android:name="itp341.mathur.eshita.finalproject.NewUserActivity"/>
         <activity android:name="itp341.mathur.eshita.finalproject.SearchActivity"/>
+        <meta-data android:name="net.hockeyapp.android.appIdentifier" android:value="27c61feac6cf48738b10a90b8ab7b30d" />
     </application>
 
 </manifest>

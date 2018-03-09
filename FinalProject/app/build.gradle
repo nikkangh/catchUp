@@ -10,6 +10,8 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        manifestPlaceholders = [HOCKEYAPP_APP_ID: "27c61feac6cf48738b10a90b8ab7b30d"]
+
     }
     buildTypes {
         release {
@@ -36,6 +38,7 @@ dependencies {
     compile 'com.firebaseui:firebase-ui-database:0.6.2'
     compile 'com.google.firebase:firebase-auth:9.8.0'
 
+    compile 'net.hockeyapp.android:HockeySDK:5.1.0'
 
 
 }

@@ -121,7 +121,7 @@ public class FoodBankActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         // Display the first 500 characters of the response string.
-                        Log.d(TAG, "Response is: "+ response.substring(0,500));
+                        Log.d(TAG, "Response is: "+ response.substring(0,100));
                     }
                 }, new Response.ErrorListener() {
             @Override

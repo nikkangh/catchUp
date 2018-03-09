@@ -20,8 +20,12 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import net.hockeyapp.android.CrashManager;
+import net.hockeyapp.android.UpdateManager;
+
 
 import java.io.Serializable;
 
@@ -35,6 +39,8 @@ public class NewUserActivity extends AppCompatActivity {
     Button signUp;
     private FirebaseAuth firebaseAuth;
     private ProgressDialog progressDialog;
+    //ANALYTICS
+    private FirebaseAnalytics mFirebaseAnalytics;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +50,8 @@ public class NewUserActivity extends AppCompatActivity {
         progressDialog = new ProgressDialog(this);
         firebaseAuth = FirebaseAuth.getInstance();
 
+        //ANALYTICS
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
         username = (EditText) findViewById(R.id.new_user_username);
         password = (EditText) findViewById(R.id.new_user_password);
@@ -64,6 +72,13 @@ public class NewUserActivity extends AppCompatActivity {
         signUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //ANALYTICS
+                Bundle bundle = new Bundle();
+                bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "2");
+                bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "SignupClick1");
+                bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "NewUserActivity");
+                mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
+
                 Intent i = new Intent(getApplicationContext(), LoginActivity.class);
                 startActivity(i);
             }
@@ -82,6 +97,13 @@ public class NewUserActivity extends AppCompatActivity {
         if (TextUtils.isEmpty(passwordString)) {
             Toast.makeText(this, "Please enter password", Toast.LENGTH_SHORT).show();
         }
+
+        //ANALYTICS
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "2");
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "SignupClick2");
+        bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "NewUserActivity");
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
 
         progressDialog.setMessage("Signing you in...");
         progressDialog.show();
@@ -104,8 +126,5 @@ public class NewUserActivity extends AppCompatActivity {
                 });
 
     }
-
-
-
 
 }
