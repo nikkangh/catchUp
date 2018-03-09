@@ -1,11 +1,10 @@
-package itp341.mathur.eshita.finalproject;
+package edu.usc.cs404.catchup;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -22,51 +21,53 @@ import net.hockeyapp.android.CrashManager;
 import net.hockeyapp.android.UpdateManager;
 import net.hockeyapp.android.metrics.MetricsManager;
 
-public class LoginActivity extends AppCompatActivity {
+public class SignUpActivity extends AppCompatActivity {
 
-    private Button loginButton;
-    private Button newUserButton;
-    private EditText email;
-    private EditText password;
+    private EditText editTextEmail;
+    private EditText editTextPassword;
+
+    private Button buttonLogIn;
+    private Button buttonSignUp;
+
     private ProgressDialog progressDialog;
     private FirebaseAuth firebaseAuth;
+
     //ANALYTICS
     private FirebaseAnalytics mFirebaseAnalytics;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_signup);
 
         progressDialog = new ProgressDialog(this);
-
         firebaseAuth = FirebaseAuth.getInstance();
 
         //ANALYTICS
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
-        loginButton = (Button)findViewById(R.id.login_button);
-        newUserButton = (Button)findViewById(R.id.new_user_button);
-        email = (EditText)findViewById(R.id.editTextEmail);
-        password = (EditText)findViewById(R.id.editTextPassword);
+        buttonLogIn = (Button)findViewById(R.id.buttonLogIn);
+        buttonSignUp = (Button)findViewById(R.id.buttonSignUp);
+        editTextEmail = (EditText)findViewById(R.id.editTextEmail);
+        editTextPassword = (EditText)findViewById(R.id.editTextPassword);
 
-        loginButton.setOnClickListener(new View.OnClickListener() {
+        buttonLogIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                //ANALYTICS
+               /* //ANALYTICS
                 Bundle bundle = new Bundle();
                 bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "1");
                 bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "LoginClick1");
-                bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "LoginActivity");
-                mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
+                bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "SignUpActivity");
+                mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);*/
 
-                Intent i = new Intent(getApplicationContext(), NewUserActivity.class);
+                Intent i = new Intent(getApplicationContext(), LogInActivity.class);
                 startActivity(i);
             }
         });
 
-        newUserButton.setOnClickListener(new View.OnClickListener() {
+        buttonSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -74,39 +75,36 @@ public class LoginActivity extends AppCompatActivity {
                 Bundle bundle = new Bundle();
                 bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "1");
                 bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "LoginClick1");
-                bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "LoginActivity");
+                bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "SignUpActivity");
                 mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
 
-                String emailString = email.getText().toString();
-                String passwordString = password.getText().toString();
-                if (!emailString.isEmpty() && !passwordString.isEmpty()) {
-                    registerUser(emailString, passwordString);
-                    Intent i = new Intent(getApplicationContext(), SearchActivity.class);
-                    startActivity(i);
-                }
+                String emailString = editTextEmail.getText().toString();
+                String passwordString = editTextPassword.getText().toString();
+                signUpUser(emailString, passwordString);
             }
         });
+
         //HOCKEY
         checkForUpdates();
         MetricsManager.register(getApplication());
     }
 
-    private void registerUser(String email1, String password1) {
-        String emailString = email1;
-        String passwordString = password1;
+    private void signUpUser(String email, String password) {
 
-        if (TextUtils.isEmpty(emailString)) {
-            Toast.makeText(this, "Please enter email", Toast.LENGTH_SHORT).show();
+        if (email.isEmpty()) {
+            Toast.makeText(this, "Please enter your email", Toast.LENGTH_LONG).show();
+            return;
         }
-        if (TextUtils.isEmpty(passwordString)) {
-            Toast.makeText(this, "Please enter password", Toast.LENGTH_SHORT).show();
+        if (password.length() < 6) {
+            Toast.makeText(this, "Please enter a password that is longer than 6 characters", Toast.LENGTH_LONG).show();
+            return;
         }
 
         //ANALYTICS
         Bundle bundle = new Bundle();
         bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "1");
         bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "LoginClick2");
-        bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "LoginActivity");
+        bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "SignUpActivity");
         mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
         MetricsManager.trackEvent("LoginClick2");
 
@@ -114,16 +112,17 @@ public class LoginActivity extends AppCompatActivity {
         progressDialog.setMessage("Registering User...");
         progressDialog.show();
 
-        firebaseAuth.createUserWithEmailAndPassword(emailString, passwordString)
+        firebaseAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
+                        progressDialog.dismiss();
                         if (task.isSuccessful()) {
-                            progressDialog.dismiss();
-                            Toast.makeText(LoginActivity.this, "Registered", Toast.LENGTH_SHORT).show();
+                            Intent i = new Intent(getApplicationContext(), SearchActivity.class);
+                            startActivity(i);
                         }
                         else {
-                            Toast.makeText(LoginActivity.this, "Not Successful, Try Again!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SignUpActivity.this, "Sign Up Not Successful, Try Again!", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });

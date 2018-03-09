@@ -1,19 +1,10 @@
-package itp341.mathur.eshita.finalproject;
+package edu.usc.cs404.catchup;
 
 /**
  * Created by eshitamathur on 5/4/17.
  */
 
 import android.content.Context;
-
-import java.util.ArrayList;
-import java.util.List;
-
-
-import android.content.Context;
-
-import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.Volley;
 
 import java.util.ArrayList;
 import java.util.List;

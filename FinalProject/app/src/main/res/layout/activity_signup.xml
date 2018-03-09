@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_login"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/activity_signUp"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorBackground"
@@ -10,7 +11,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="edu.usc.cs404.catchup.LogInActivity">
+    tools:context="edu.usc.cs404.catchup.SignUpActivity">
 
     <ImageView
         android:id="@+id/logoImg"
@@ -55,39 +56,40 @@
         android:layout_marginTop="16dp"
         android:fontFamily="sans-serif"/>
 
+
     <EditText
         android:id="@+id/editTextPassword"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:hint="@string/password"
-        android:textColor="@color/colorGrey"
         android:textColorHint="@color/colorGrey"
+        android:textColor="@color/colorGrey"
         android:background="@color/colorWhite"
         android:inputType="textPassword"
-        android:layout_above="@+id/buttonLogIn"
+        android:layout_above="@+id/buttonSignUp"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
         android:layout_marginTop="8dp"
         android:fontFamily="sans-serif"/>
 
     <Button
-        android:id="@+id/buttonLogIn"
-        android:text="@string/log_in"
+        android:id="@+id/buttonSignUp"
+        android:text="@string/sign_up"
         android:textColor="@color/colorWhite"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:layout_above="@+id/buttonSignUp"
+        android:layout_above="@+id/buttonLogIn"
         android:layout_marginTop="8dp"
         android:backgroundTint="@color/colorAccent"/>
 
     <Button
-        android:id="@+id/buttonSignUp"
-        style="@style/Widget.AppCompat.Button.Borderless"
+        android:id="@+id/buttonLogIn"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_alignParentBottom="true"
         android:foregroundGravity="center"
+        android:text="@string/log_in"
+        android:textColor="@color/colorAccent"
         android:fontFamily="sans-serif"
-        android:text="@string/sign_up"
-        android:textColor="@color/colorAccent"/>
+        style="@style/Widget.AppCompat.Button.Borderless"/>
 </RelativeLayout>

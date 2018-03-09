@@ -1,4 +1,4 @@
-package itp341.mathur.eshita.finalproject;
+package edu.usc.cs404.catchup;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

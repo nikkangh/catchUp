@@ -1,4 +1,4 @@
-package itp341.mathur.eshita.finalproject;
+package edu.usc.cs404.catchup;
 
 import org.junit.Test;
 

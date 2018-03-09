@@ -1,4 +1,4 @@
-package itp341.mathur.eshita.finalproject;
+package edu.usc.cs404.catchup;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
