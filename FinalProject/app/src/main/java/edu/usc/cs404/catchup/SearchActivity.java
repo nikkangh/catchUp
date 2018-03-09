@@ -27,10 +27,12 @@ public class SearchActivity extends AppCompatActivity {
         buttonSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(getApplicationContext(), FoodBankActivity.class);
-                String loc = editTextSearchTerm.getText().toString().trim();
-                i.putExtra("STRING_I_NEED", loc);
-                startActivity(i);
+                if (!editTextSearchTerm.getText().toString().isEmpty()) {
+                    Intent i = new Intent(getApplicationContext(), FoodBankActivity.class);
+                    String loc = editTextSearchTerm.getText().toString().trim();
+                    i.putExtra("STRING_I_NEED", loc);
+                    startActivity(i);
+                }
             }
         });
     }

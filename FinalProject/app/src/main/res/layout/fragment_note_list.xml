@@ -12,31 +12,21 @@
     >
 
     <TextView
-        android:text="Foodbanks in your Area: "
+        android:id="@+id/textViewResultsHeader"
+        android:text="@string/search_results_header"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
-        android:textColor = "@color/colorWhite"
-        android:id="@+id/textView"
-        android:textSize="18sp" />
-
-    <TextView
-        android:text="Language"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_toEndOf="@+id/textView"
-        android:textColor = "@color/colorWhite"
-        android:id="@+id/text_language"
-        android:textStyle="normal|bold"
-        android:textSize="18sp" />
+        android:textColor = "@color/colorAccent"
+        android:textSize="18sp"
+        android:layout_marginBottom="16dp"/>
 
     <ListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:textColor = "@color/colorWhite"
-        android:layout_below="@+id/textView"
+        android:layout_below="@+id/textViewResultsHeader"
         android:layout_alignParentStart="true"
         android:id="@+id/list_countries" />
 </RelativeLayout>

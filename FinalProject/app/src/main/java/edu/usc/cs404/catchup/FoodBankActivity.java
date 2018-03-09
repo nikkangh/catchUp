@@ -46,16 +46,18 @@ public class FoodBankActivity extends AppCompatActivity {
 
     private ListView listCountries;
 
-    private TextView textLanguage;
+    private TextView textViewResultsHeader;
 
     private RequestQueue queue;
     private CustomAdapter adapter;
     private ArrayList<String> names;
     private ArrayList<String> locations;
     private ArrayList<String> prices;
+    private ArrayList<String> ratings;
 
     private RelativeLayout layout;
-    String url;
+    private String url;
+    private String term;
 
 
     @Override
@@ -63,33 +65,30 @@ public class FoodBankActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_note_list);
         layout = (RelativeLayout) findViewById(R.id.layout);
-        String newString;
 
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
             if (extras == null) {
-                newString = null;
+                term = "";
             } else {
-                newString = extras.getString("STRING_I_NEED");
+                term = extras.getString("STRING_I_NEED");
             }
         } else {
-            newString = (String) savedInstanceState.getSerializable("STRING_I_NEED");
+            term = (String) savedInstanceState.getSerializable("STRING_I_NEED");
         }
 
-        url = initialURL + newString; // + "&term=foodbank";
+        url = initialURL + term; // + "&term=foodbank";
 
 
-        textLanguage = (TextView) findViewById(R.id.text_language);
         listCountries = (ListView) findViewById(R.id.list_countries);
-
+        textViewResultsHeader = (TextView) findViewById(R.id.textViewResultsHeader);
         //Intent i = getIntent();
         //String language = i.getStringExtra(EXTRA_LANGUAGE);
-
-        textLanguage.setText(newString);
 
         names = new ArrayList<>();
         locations = new ArrayList<>();
         prices = new ArrayList<>();
+        ratings = new ArrayList<>();
         adapter = new CustomAdapter(this,names);
         listCountries.setAdapter(adapter);
 
@@ -156,6 +155,17 @@ public class FoodBankActivity extends AppCompatActivity {
                                 } else {
                                     prices.add("");
                                 }
+
+                                if (a.has("rating")) {
+                                    float rating = Float.valueOf(a.getString("rating"));
+                                    StringBuilder sb = new StringBuilder();
+                                    for (int j = 0; j < rating; j++) {
+                                        sb.append("*");
+                                    }
+                                    ratings.add(sb.toString());
+                                } else {
+                                    ratings.add("");
+                                }
                             }
                             System.out.println("STOP");
 
@@ -174,10 +184,7 @@ public class FoodBankActivity extends AppCompatActivity {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
-                //params.put("Host", "api.yelp.com");
                 params.put("Authorization", token);
-                //params.put("Cache-Control", "no-cache");
-                //..add other headers
                 return params;
             }
         };
@@ -207,8 +214,10 @@ public class FoodBankActivity extends AppCompatActivity {
             // You'll need to use the mItems array to populate these...
             ((TextView) convertView.findViewById(R.id.name)).setText(names.get(position));
             ((TextView) convertView.findViewById(R.id.location)).setText(locations.get(position));
-            //((TextView) convertView.findViewById(R.id.rating)).setText(ratings(position));
+            ((TextView) convertView.findViewById(R.id.rating)).setText(ratings.get(position));
             ((TextView) convertView.findViewById(R.id.price)).setText(prices.get(position));
+
+            textViewResultsHeader.setText(String.format(getString(R.string.search_results_header), mNames.size(), term));
             return convertView;
         }
     }
