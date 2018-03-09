@@ -1,11 +1,14 @@
 package edu.usc.cs404.catchup;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -35,8 +38,6 @@ public class FoodBankActivity extends AppCompatActivity {
     private final String initialURL = "https://api.yelp.com/v3/businesses/search?location=losangeles&term=";
 
 
-
-
     //my added
     //private final String token = "Bearer 2AoB-QZdrxqCUkWLkISbsJP-YwoKP4SrSfswvJg9YYbllhDfJpUEpedhHhgyPUMM25W4rMy" +
     //"YZHOgO1EJ9mAnjHUNeaK6R1-sJrpqd1oSEcP_YcU0dw5YOBOTz14OWXYx";
@@ -44,11 +45,18 @@ public class FoodBankActivity extends AppCompatActivity {
 
 
     private ListView listCountries;
+
     private TextView textLanguage;
 
     private RequestQueue queue;
-    private ArrayAdapter<String> adapter;
-    private ArrayList<String> countries;
+    private ArrayAdapter<String> adapterc;
+    private ArrayAdapter<String> adapterl;
+    private ArrayAdapter<String> adapterp;
+    private CustomAdapter adapter;
+    private ArrayList<String> names;
+    private ArrayList<String> locations;
+    private ArrayList<String> prices;
+
     private RelativeLayout layout;
     String url;
 
@@ -58,18 +66,17 @@ public class FoodBankActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_note_list);
         layout = (RelativeLayout) findViewById(R.id.layout);
-        //layout.setBackgroundColor(Color.parseColor("#d6fffc"));
         String newString;
 
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
-            if(extras == null) {
-                newString= null;
+            if (extras == null) {
+                newString = null;
             } else {
-                newString= extras.getString("STRING_I_NEED");
+                newString = extras.getString("STRING_I_NEED");
             }
         } else {
-            newString= (String) savedInstanceState.getSerializable("STRING_I_NEED");
+            newString = (String) savedInstanceState.getSerializable("STRING_I_NEED");
         }
 
         url = initialURL + newString; // + "&term=foodbank";
@@ -83,12 +90,20 @@ public class FoodBankActivity extends AppCompatActivity {
 
         textLanguage.setText(newString);
 
-        countries  = new ArrayList<>();
-        adapter = new ArrayAdapter<>(
+        names = new ArrayList<>();
+        locations = new ArrayList<>();
+        prices = new ArrayList<>();
+        /*adapter = new ArrayAdapter<>(
                 this,
-                android.R.layout.simple_list_item_1,
-                countries);
+                R.layout.list_item,
+                names);
+        listCountries.setAdapter(adapter);*/
+        //adapter = new ArrayAdapter<String>(this, R.layout.list_item,R.id.name,names);
+        //adapterl = new ArrayAdapter<String>(this, R.layout.list_item,R.id.location,locations);
+        //adapterp = new ArrayAdapter<String>(this, R.layout.list_item,R.id.price,prices);
+        adapter = new CustomAdapter(this,names);
         listCountries.setAdapter(adapter);
+
 
 
         queue = Volley.newRequestQueue(this);
@@ -105,8 +120,8 @@ public class FoodBankActivity extends AppCompatActivity {
         });
 
 
-
     }
+
     //IMPORTANT NOTE: unlike the HTTP version, this JSON is already returned
     //as a JSONArray
     public void requestJSONParse(String reqURL) {
@@ -117,7 +132,7 @@ public class FoodBankActivity extends AppCompatActivity {
                     public void onResponse(String response) {
                         // Display the first 500 characters of the response string.
                         try {
-                            Log.d(TAG, "Response is: "+ response.substring(0,500));
+                            Log.d(TAG, "Response is: " + response.substring(0, 500));
 
                             JSONObject mainObject = new JSONObject(response);
 
@@ -125,20 +140,40 @@ public class FoodBankActivity extends AppCompatActivity {
 
                             for (int i = 0; i < results.length(); i++) {
                                 JSONObject a = results.getJSONObject(i);
-                                JSONObject shipper = a.getJSONObject("location");
-                                String b = a.getString("name");
-                                countries.add(b);
-                                String c = a.getString("display_phone");
-                                String d = shipper.getString("display_address");
-                                System.out.println(b);
-                                System.out.println(c);
-                                System.out.println(d);
+                                if (a.has("name")) {
+                                    String b = a.getString("name");
+                                    names.add(b);
+                                } else {
+                                    names.add("");
+                                }
+                                if (a.has("location")) {
+                                    JSONObject shipper = a.getJSONObject("location");
+                                    if (shipper.has("display_address")) {
+                                        JSONArray d = shipper.getJSONArray("display_address");
+                                        StringBuilder sb = new StringBuilder(d.getString(0));
+                                        for (int j = 1; j < d.length(); j++) {
+                                            sb.append("\n");
+                                            sb.append(d.getString(j));
+                                        }
+                                        locations.add(sb.toString());
+                                    }
+                                } else {
+                                    locations.add("");
+                                }
+
+                                if (a.has("price")) {
+                                    String c = a.getString("price");
+                                    prices.add(c);
+                                } else {
+                                    prices.add("");
+                                }
                             }
+                            System.out.println("STOP");
+
                             adapter.notifyDataSetChanged();
 
-
                         } catch (JSONException e) {
-                            //e.printStackTrace();
+                            Log.d(TAG, "onErrorResponse: " + e.getMessage());
                         }
                     }
                 }, new Response.ErrorListener() {
@@ -146,7 +181,7 @@ public class FoodBankActivity extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
                 Log.d(TAG, "onErrorResponse: " + error.getMessage());
             }
-        }){
+        }) {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
@@ -158,60 +193,35 @@ public class FoodBankActivity extends AppCompatActivity {
             }
         };
 
-
-        /*JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, url, null,
-                new Response.Listener<JSONObject>()
-                {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        // display response
-                        //Log.d("Response I GOT IT", response.toString());
-                        try {
-                            String resp = response.toString();
-
-                            //JSONObject object = (JSONObject) new JSONTokener(resp).nextValue();
-                            JSONArray results = response.getJSONArray("businesses");
-
-                            for (int i = 0; i < results.length(); i++) {
-                                JSONObject a = results.getJSONObject(i);
-                                JSONObject shipper = a.getJSONObject("location");
-                                String b = a.getString("name");
-                                countries.add(b);
-                                String c = a.getString("display_phone");
-                                String d = shipper.getString("display_address");
-                                System.out.println(b);
-                                System.out.println(c);
-                                System.out.println(d);
-                            }
-                            adapter.notifyDataSetChanged();
-
-
-                        } catch (JSONException e) {
-                            //e.printStackTrace();
-                        }
-                    }
-                },
-                new Response.ErrorListener()
-                {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.d("Error.Response", error.toString());
-                    }
-                }
-
-
-        ) {
-
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                HashMap<String, String> headers = new HashMap<String, String>();
-                //headers.put("Content-Type", "application/json");
-                headers.put("Authorization", token);
-                return headers;
-            }
-        };*/
-
         queue.add(stringRequest);
+    }
+
+    class CustomAdapter extends ArrayAdapter<String>
+    {
+
+        protected Context mContext;
+        protected ArrayList<String> mNames;
+
+        public CustomAdapter(Context context, ArrayList<String> names) {
+            super(context, R.layout.list_item, names); // Use a custom layout file
+            mContext = context;
+            mNames = names;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            System.out.println("enters");
+            if(convertView == null){
+                convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_item,null);
+            }
+
+            // You'll need to use the mItems array to populate these...
+            ((TextView) convertView.findViewById(R.id.name)).setText(names.get(position));
+            ((TextView) convertView.findViewById(R.id.location)).setText(locations.get(position));
+            //((TextView) convertView.findViewById(R.id.rating)).setText(ratings(position));
+            ((TextView) convertView.findViewById(R.id.price)).setText(prices.get(position));
+            return convertView;
+        }
     }
 }
 

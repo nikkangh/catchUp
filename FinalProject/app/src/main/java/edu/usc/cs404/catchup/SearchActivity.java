@@ -12,39 +12,26 @@ import com.android.volley.RequestQueue;
 
 
 public class SearchActivity extends AppCompatActivity {
+    private EditText editTextSearchTerm;
 
-    Button searchSubmitButton;
-    EditText location;
-    RequestQueue queue;
-    private TextView mTextView;
-
+    private Button buttonSearch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.search);
+        setContentView(R.layout.activity_search);
 
-        searchSubmitButton = (Button)findViewById(R.id.searchSubmitButton);
-        location = (EditText)findViewById(R.id.address);
+        editTextSearchTerm = (EditText)findViewById(R.id.editTextSearchTerm);
+        buttonSearch = (Button)findViewById(R.id.ButtonSearch);
 
-
-
-
-        searchSubmitButton.setOnClickListener(new View.OnClickListener() {
+        buttonSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(getApplicationContext(), FoodBankActivity.class);
-                String loc = location.getText().toString();
+                String loc = editTextSearchTerm.getText().toString().trim();
                 i.putExtra("STRING_I_NEED", loc);
                 startActivity(i);
-
-
-
-
             }
         });
-
-
-
     }
 }

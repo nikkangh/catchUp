@@ -103,7 +103,7 @@
             android:paddingRight="10dp"/>
 
         <EditText
-            android:id="@+id/address"
+            android:id="@+id/editTextSearchTerm"
             android:layout_width="320dp"
             android:layout_height="35dp"
             android:background="@color/colorWhite"
