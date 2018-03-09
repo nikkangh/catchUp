@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="itp341.mathur.eshita.finalproject.SurveyActivity">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+        <CheckBox android:id="@+id/checkbox_chinese"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Chinese"
+            android:onClick="onCheckboxClicked"/>
+        <CheckBox android:id="@+id/checkbox_french"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="French"
+            android:onClick="onCheckboxClicked"/>
+        <CheckBox android:id="@+id/checkbox_indian"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Indian"
+            android:onClick="onCheckboxClicked"/>
+        <CheckBox android:id="@+id/checkbox_italian"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Italian"
+            android:onClick="onCheckboxClicked"/>
+        <CheckBox android:id="@+id/checkbox_japanese"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Japanese"
+            android:onClick="onCheckboxClicked"/>
+
+    </LinearLayout>
+
+
+</android.support.constraint.ConstraintLayout>
