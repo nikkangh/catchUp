@@ -32,6 +32,7 @@ public class NewUserActivity extends AppCompatActivity {
     EditText username;
     EditText password;
     Button submit;
+    Button signUp;
     private FirebaseAuth firebaseAuth;
     private ProgressDialog progressDialog;
 
@@ -47,13 +48,24 @@ public class NewUserActivity extends AppCompatActivity {
         username = (EditText) findViewById(R.id.new_user_username);
         password = (EditText) findViewById(R.id.new_user_password);
         submit = (Button) findViewById(R.id.submitButton);
+        signUp = (Button) findViewById(R.id.signUpButton);
 
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String nameString = username.getText().toString();
                 String passwordString = password.getText().toString();
-                registerUser(nameString, passwordString);
+                if (!nameString.isEmpty() && !passwordString.isEmpty()) {
+                    registerUser(nameString, passwordString);
+                }
+            }
+        });
+
+        signUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(), LoginActivity.class);
+                startActivity(i);
             }
         });
     }

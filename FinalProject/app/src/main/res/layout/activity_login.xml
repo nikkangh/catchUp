@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
@@ -15,52 +14,86 @@
     tools:context="itp341.mathur.eshita.finalproject.LoginActivity">
 
 
+
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="340dp"
-        android:layout_height="214dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_above="@id/editTextEmail"
         android:layout_gravity="center"
-        android:src="@drawable/logomunch"
-         />
+        android:src="@drawable/tomato_icon"
+        android:paddingTop="64dp"
+        android:paddingBottom="64dp"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_above="@id/editTextEmail"
+        android:gravity="center"
+        android:text="CatchUp"
+        android:fontFamily="cursive"
+        android:textStyle="bold"
+        android:textSize="70sp"
+        android:shadowColor="@color/colorDarkBackground"
+        android:shadowDx="2"
+        android:shadowDy="2"
+        android:shadowRadius=".01"
+        android:textColor="@color/colorWhite"
+        />
 
     <EditText
         android:id="@+id/editTextEmail"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
         android:background="@color/colorWhite"
-        android:hint="email"
+        android:hint="@string/email"
+        android:textColor="@color/colorGrey"
+        android:textColorHint="@color/colorGrey"
         android:inputType = "textEmailAddress"
-        android:layout_weight="0.12"
-        android:fontFamily="sans-serif" />
+        android:layout_above="@id/editTextPassword"
+        android:paddingStart="16dp"
+        android:layout_marginTop="16dp"
+        android:fontFamily="sans-serif"/>
 
 
     <EditText
         android:id="@+id/editTextPassword"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="password"
+        android:layout_height="48dp"
+        android:hint="@string/password"
+        android:textColor="@color/colorGrey"
+        android:textColorHint="@color/colorGrey"
         android:background="@color/colorWhite"
         android:inputType="textPassword"
-        android:layout_weight="0.11" />
+        android:layout_above="@+id/new_user_button"
+        android:paddingStart="16dp"
+        android:layout_marginTop="8dp"
+        android:fontFamily="sans-serif"/>
 
     <Button
-        android:text="Sign Up"
+        android:text="@string/sign_up"
         android:textColor="@color/colorWhite"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:id="@+id/new_user_button"
-        style="@style/Widget.AppCompat.Button"
-        android:textStyle="normal|bold" />
+        android:layout_above="@+id/login_button"
+        android:layout_marginTop="8dp"
+        android:backgroundTint="@color/colorAccent"
+        />
 
     <Button
         android:id="@+id/login_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@color/colorWhite"
-        android:text="Already User? Login Here"
         style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_alignParentBottom="true"
+        android:foregroundGravity="center"
         android:fontFamily="sans-serif"
-        android:textSize="18sp"
-        android:textStyle="normal|bold" />
+        android:text="@string/log_in"
+        android:textColor="@color/colorAccent"
+        />
 
-</LinearLayout>
+</RelativeLayout>

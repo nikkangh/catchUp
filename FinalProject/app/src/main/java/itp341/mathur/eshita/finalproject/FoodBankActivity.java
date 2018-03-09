@@ -22,6 +22,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
@@ -35,9 +36,11 @@ import java.util.Map;
 public class FoodBankActivity extends AppCompatActivity {
     public final static String EXTRA_LANGUAGE = "extra_language";
     private final static String TAG = FoodBankActivity.class.getSimpleName();
-    private final String token = "Bearer 2AoB-QZdrxqCUkWLkISbsJP-YwoKP4SrSfswvJg9YYbllhDfJpUEpedhHhgyPUMM25W4rMy" +
-            "YZHOgO1EJ9mAnjHUNeaK6R1-sJrpqd1oSEcP_YcU0dw5YOBOTz14OWXYx";
-    private final String initialURL = "https://api.yelp.com/v3/businesses/search?location=";
+    private final String token = "Bearer tWAipkg4xbWWob7UL4FOB1WCpYjULYS8YTZE4UATW60-wHE5SuAbCrrQj_EBc0x5OhujYfLqnVQZ6pfi2itHglfkPv4kCn6ObEJxgUSmP0qbVJV7gcNAFlCp5tOhWnYx";
+    private final String initialURL = "https://api.yelp.com/v3/businesses/search?location=losangeles&term=";
+
+
+
 
     //my added
     //private final String token = "Bearer 2AoB-QZdrxqCUkWLkISbsJP-YwoKP4SrSfswvJg9YYbllhDfJpUEpedhHhgyPUMM25W4rMy" +
@@ -74,7 +77,7 @@ public class FoodBankActivity extends AppCompatActivity {
             newString= (String) savedInstanceState.getSerializable("STRING_I_NEED");
         }
 
-        url = initialURL + newString + "&term=foodbank";
+        url = initialURL + newString; // + "&term=foodbank";
 
 
         textLanguage = (TextView) findViewById(R.id.text_language);
@@ -112,7 +115,33 @@ public class FoodBankActivity extends AppCompatActivity {
     //IMPORTANT NOTE: unlike the HTTP version, this JSON is already returned
     //as a JSONArray
     public void requestJSONParse(String reqURL) {
-        JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, url, null,
+
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url.trim(),
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        // Display the first 500 characters of the response string.
+                        Log.d(TAG, "Response is: "+ response.substring(0,500));
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d(TAG, "onErrorResponse: " + error.getMessage());
+            }
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                //params.put("Host", "api.yelp.com");
+                params.put("Authorization", token);
+                //params.put("Cache-Control", "no-cache");
+                //..add other headers
+                return params;
+            }
+        };
+
+
+        /*JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONObject>()
                 {
                     @Override
@@ -162,9 +191,9 @@ public class FoodBankActivity extends AppCompatActivity {
                 headers.put("Authorization", token);
                 return headers;
             }
-        };
+        };*/
 
-        queue.add(getRequest);
+        queue.add(stringRequest);
     }
 }
 
