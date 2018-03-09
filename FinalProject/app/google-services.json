@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "236754495873-7rpprbcjjn43qpf57a7ih7e9ve64spcu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "itp341.mathur.eshita.finalproject",
+            "certificate_hash": "959a18d8847dabc4c06e17ef69974689b4333c64"
+          }
+        },
+        {
           "client_id": "236754495873-qoje5gtoat1htbjo6ec1clcemickmbf3.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -29,8 +37,13 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "236754495873-qoje5gtoat1htbjo6ec1clcemickmbf3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
           "status": 2

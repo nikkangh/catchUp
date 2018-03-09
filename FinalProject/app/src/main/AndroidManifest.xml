@@ -18,10 +18,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity android:name=".FoodBankActivity" />
         <activity android:name=".NewUserActivity" />
         <activity android:name=".SearchActivity" />
-        <activity android:name=".ScheduleActivity"></activity>
+        <activity android:name=".ScheduleActivity"/>
+        <meta-data android:name="net.hockeyapp.android.appIdentifier" android:value="27c61feac6cf48738b10a90b8ab7b30d" />
     </application>
 
 </manifest>

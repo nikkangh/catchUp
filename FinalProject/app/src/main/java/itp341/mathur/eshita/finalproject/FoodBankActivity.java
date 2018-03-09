@@ -145,7 +145,6 @@ public class FoodBankActivity extends AppCompatActivity {
                         } catch (JSONException e) {
                             //e.printStackTrace();
                         }
-
                     }
                 }, new Response.ErrorListener() {
             @Override

@@ -15,6 +15,12 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+//ANALYTICS
+import com.google.firebase.analytics.FirebaseAnalytics;
+//HOCKEY
+import net.hockeyapp.android.CrashManager;
+import net.hockeyapp.android.UpdateManager;
+import net.hockeyapp.android.metrics.MetricsManager;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -24,6 +30,9 @@ public class LoginActivity extends AppCompatActivity {
     private EditText password;
     private ProgressDialog progressDialog;
     private FirebaseAuth firebaseAuth;
+    //ANALYTICS
+    private FirebaseAnalytics mFirebaseAnalytics;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,6 +42,8 @@ public class LoginActivity extends AppCompatActivity {
 
         firebaseAuth = FirebaseAuth.getInstance();
 
+        //ANALYTICS
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
         loginButton = (Button)findViewById(R.id.login_button);
         newUserButton = (Button)findViewById(R.id.new_user_button);
@@ -42,6 +53,14 @@ public class LoginActivity extends AppCompatActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                //ANALYTICS
+                Bundle bundle = new Bundle();
+                bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "1");
+                bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "LoginClick1");
+                bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "LoginActivity");
+                mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
+
                 Intent i = new Intent(getApplicationContext(), NewUserActivity.class);
                 startActivity(i);
             }
@@ -50,6 +69,14 @@ public class LoginActivity extends AppCompatActivity {
         newUserButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                //ANALYTICS
+                Bundle bundle = new Bundle();
+                bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "1");
+                bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "LoginClick1");
+                bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "LoginActivity");
+                mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
+
                 String emailString = email.getText().toString();
                 String passwordString = password.getText().toString();
                 if (!emailString.isEmpty() && !passwordString.isEmpty()) {
@@ -59,7 +86,9 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         });
-
+        //HOCKEY
+        checkForUpdates();
+        MetricsManager.register(getApplication());
     }
 
     private void registerUser(String email1, String password1) {
@@ -72,6 +101,15 @@ public class LoginActivity extends AppCompatActivity {
         if (TextUtils.isEmpty(passwordString)) {
             Toast.makeText(this, "Please enter password", Toast.LENGTH_SHORT).show();
         }
+
+        //ANALYTICS
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "1");
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "LoginClick2");
+        bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "LoginActivity");
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
+        MetricsManager.trackEvent("LoginClick2");
+
 
         progressDialog.setMessage("Registering User...");
         progressDialog.show();
@@ -91,5 +129,36 @@ public class LoginActivity extends AppCompatActivity {
                 });
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        // ... your own onResume implementation
+        checkForCrashes();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        unregisterManagers();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        unregisterManagers();
+    }
+
+    private void checkForCrashes() {
+        CrashManager.register(this);
+    }
+
+    private void checkForUpdates() {
+        // Remove this for store builds!
+        UpdateManager.register(this);
+    }
+
+    private void unregisterManagers() {
+        UpdateManager.unregister();
+    }
 
 }

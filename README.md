@@ -1,5 +1,5 @@
-# MunchAndroidApp
+# CatchUp
 
-This App was for my final project for Android Development. It registers new users in Google's Cloud Firebase and uses the Yelp API to get the nearest foodbanks in the area.
+This App takes into account your schedule and things you like to do, and suggests new things to do in your city!
 
-![Munch Gif](muchrecording1.gif)
+
