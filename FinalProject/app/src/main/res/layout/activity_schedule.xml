@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="itp341.mathur.eshita.finalproject.ScheduleActivity"
+    android:background="@color/colorBackground">
+
+    <TextView
+        android:id="@+id/prompt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/enter_your_work_hours"
+        android:textSize="35sp"
+        android:textColor="@color/colorGrey"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:gravity="center"
+        android:fontFamily="cursive"/>
+
+    <View
+        android:id="@+id/mondayBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/mondayEnd">
+        <com.appyvet.materialrangebar.RangeBar
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            app:mrb_pinMaxFont="12sp"
+            app:mrb_tickEnd="24"
+            app:mrb_tickInterval=".5"
+            app:mrb_tickStart="0"/>
+    </View>
+
+    <TextView
+        android:id="@+id/mondayStart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="9:00 AM"
+        android:textSize="20sp"
+        android:textColor="@color/colorGrey"
+        android:layout_alignStart="@+id/mondayBar"
+        android:layout_above="@id/mondayBar"/>
+
+    <TextView
+        android:id="@+id/mondayEnd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="5:00 PM"
+        android:textSize="20sp"
+        android:textColor="@color/colorGrey"
+        android:layout_alignEnd="@+id/mondayBar"
+        android:layout_alignParentBottom="true"/>
+
+</RelativeLayout>

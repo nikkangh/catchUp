@@ -121,7 +121,31 @@ public class FoodBankActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         // Display the first 500 characters of the response string.
-                        Log.d(TAG, "Response is: "+ response.substring(0,500));
+                        try {
+                            Log.d(TAG, "Response is: "+ response.substring(0,500));
+
+                            JSONObject mainObject = new JSONObject(response);
+
+                            JSONArray results = mainObject.getJSONArray("businesses");
+
+                            for (int i = 0; i < results.length(); i++) {
+                                JSONObject a = results.getJSONObject(i);
+                                JSONObject shipper = a.getJSONObject("location");
+                                String b = a.getString("name");
+                                countries.add(b);
+                                String c = a.getString("display_phone");
+                                String d = shipper.getString("display_address");
+                                System.out.println(b);
+                                System.out.println(c);
+                                System.out.println(d);
+                            }
+                            adapter.notifyDataSetChanged();
+
+
+                        } catch (JSONException e) {
+                            //e.printStackTrace();
+                        }
+
                     }
                 }, new Response.ErrorListener() {
             @Override
