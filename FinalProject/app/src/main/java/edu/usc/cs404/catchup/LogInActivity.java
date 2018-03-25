@@ -53,7 +53,7 @@ public class LogInActivity extends AppCompatActivity {
                 //ANALYTICS
                 Bundle bundle = new Bundle();
                 bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "2");
-                bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "SignupClick1");
+                bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "LoginClick1");
                 bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "LogInActivity");
                 mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
 
@@ -92,7 +92,7 @@ public class LogInActivity extends AppCompatActivity {
         //ANALYTICS
         Bundle bundle = new Bundle();
         bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "2");
-        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "SignupClick2");
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "LoginClick2");
         bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "LogInActivity");
         mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
 
