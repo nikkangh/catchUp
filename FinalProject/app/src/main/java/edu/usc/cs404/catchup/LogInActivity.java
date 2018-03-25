@@ -107,7 +107,7 @@ public class LogInActivity extends AppCompatActivity {
 
                         if (task.isSuccessful()) {
                             //finish();
-                            Intent i = new Intent(getApplicationContext(), SearchActivity.class);
+                            Intent i = new Intent(getApplicationContext(), InviteContactsActivity.class);
                             startActivity(i);
                         }
                         else {
