@@ -24,6 +24,7 @@ public class SearchActivity extends AppCompatActivity {
         editTextSearchTerm = (EditText)findViewById(R.id.editTextSearchTerm);
         buttonSearch = (Button)findViewById(R.id.ButtonSearch);
 
+
         buttonSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
