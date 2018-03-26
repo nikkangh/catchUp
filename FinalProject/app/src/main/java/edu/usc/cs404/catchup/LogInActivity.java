@@ -53,7 +53,7 @@ public class LogInActivity extends AppCompatActivity {
                 //ANALYTICS
                 Bundle bundle = new Bundle();
                 bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "2");
-                bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "SignupClick1");
+                bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "LoginClick1");
                 bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "LogInActivity");
                 mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
 
@@ -92,7 +92,7 @@ public class LogInActivity extends AppCompatActivity {
         //ANALYTICS
         Bundle bundle = new Bundle();
         bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "2");
-        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "SignupClick2");
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "LoginClick2");
         bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "LogInActivity");
         mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
 
@@ -109,7 +109,8 @@ public class LogInActivity extends AppCompatActivity {
                             //finish();
 
                             //**NOTE** If user cuisine preference from data base is empty, then go to SURVEY:
-                            Intent i = new Intent(getApplicationContext(), SurveyActivity.class);
+                            //Intent i = new Intent(getApplicationContext(), SurveyActivity.class);
+                            Intent i = new Intent(getApplicationContext(), InviteActivity.class);
                             startActivity(i);
 
                             //ELSE go to SEARCH

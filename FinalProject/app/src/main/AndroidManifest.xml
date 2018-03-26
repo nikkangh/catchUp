@@ -29,7 +29,8 @@
             android:name="net.hockeyapp.android.appIdentifier"
             android:value="27c61feac6cf48738b10a90b8ab7b30d" />
 
-        <activity android:name=".SurveyActivity"></activity>
+        <activity android:name=".SurveyActivity" />
+        <activity android:name=".InviteActivity"></activity>
     </application>
 
 </manifest>
