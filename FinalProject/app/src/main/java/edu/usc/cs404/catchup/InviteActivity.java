@@ -31,28 +31,34 @@ public class InviteActivity extends AppCompatActivity {
     }
 
     public void get(View v){
+        //Query for contact info
         Cursor cursor = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null,null,null);
         startManagingCursor(cursor);
 
+        //Array containing names and numbers
         String [] from = {ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,ContactsContract.CommonDataKinds.Phone.NUMBER, ContactsContract.CommonDataKinds.Phone._ID};
-
+        //Format of array (two text lines, one for name, one for number)
         int [] to = {android.R.id.text1, android.R.id.text2};
 
+        //Create adapter
         final SimpleCursorAdapter simpleCursorAdapter = new SimpleCursorAdapter(this, android.R.layout.simple_list_item_2,cursor,from, to);
 
+        //Plug adapter into list view
         l1.setAdapter(simpleCursorAdapter);
         l1.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 
+        //Whenever a list item is clicked
         l1.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                //https://youtu.be/kCJv5YWHRXQ
-                //Toast.makeText(getApplicationContext(), "You selected "+ i, Toast.LENGTH_SHORT).show();
+                //Get item (https://youtu.be/kCJv5YWHRXQ)
                 Cursor cursor = (Cursor) simpleCursorAdapter.getItem(i);
+                //Get name and number, print to screen for debugging
                 String name = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
                 String number = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
                 Toast.makeText(getApplicationContext(), name + " " + number, Toast.LENGTH_SHORT).show();
 
+                //Send SMS to tapped contact. Need to test on real phone. (http://www.mkyong.com/android/how-to-send-sms-message-in-android/)
                 try {
                     SmsManager smsManager = SmsManager.getDefault();
                     smsManager.sendTextMessage(number, null, "test message", null, null);
