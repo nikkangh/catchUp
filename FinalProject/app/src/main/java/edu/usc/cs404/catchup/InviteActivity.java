@@ -12,6 +12,7 @@ import android.database.Cursor;
 import android.widget.SimpleCursorAdapter;
 import android.content.Intent;
 import android.widget.Button;
+import android.util.Log;
 import android.widget.Toast;
 import android.telephony.SmsManager;
 
@@ -34,6 +35,17 @@ public class InviteActivity extends AppCompatActivity {
         //Query for contact info
         Cursor cursor = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null,null,null);
         startManagingCursor(cursor);
+
+        //this for loop will iterate through all contacts and print info to the debugger
+        if (cursor.moveToFirst()){
+            do{
+                String data = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
+                // do what ever you want here
+                Log.d("CREATION", data);
+
+            }while(cursor.moveToNext());
+        }
+        //cursor.close();
 
         //Array containing names and numbers
         String [] from = {ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,ContactsContract.CommonDataKinds.Phone.NUMBER, ContactsContract.CommonDataKinds.Phone._ID};
