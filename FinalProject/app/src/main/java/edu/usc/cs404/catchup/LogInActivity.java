@@ -110,7 +110,7 @@ public class LogInActivity extends AppCompatActivity {
 
                             //**NOTE** If user cuisine preference from data base is empty, then go to SURVEY:
                             //Intent i = new Intent(getApplicationContext(), SurveyActivity.class);
-                            Intent i = new Intent(getApplicationContext(), InviteActivity.class);
+                            Intent i = new Intent(getApplicationContext(), SurveyActivity.class);
                             startActivity(i);
 
                             //ELSE go to SEARCH
