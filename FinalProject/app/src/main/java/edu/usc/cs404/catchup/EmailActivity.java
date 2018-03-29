@@ -23,7 +23,7 @@ public class EmailActivity extends AppCompatActivity {
 
         //print email for debugging purposes
         Toast.makeText(getApplicationContext(), result, Toast.LENGTH_SHORT).show();
-        sendEmail(result);
+        //sendEmail(result);
         //CHECK database to see if email exists. if so, add friends!
         try {
             //Code for checking DB
