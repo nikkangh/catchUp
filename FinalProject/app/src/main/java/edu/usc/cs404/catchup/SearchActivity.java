@@ -19,6 +19,26 @@ public class SearchActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Intent intent = getIntent();
+        String[] surveyData = intent.getStringArrayExtra("key");
+        //surveyData contains the survey results, and to find results, simply find those without values of ""
+
+
+
+//        if(getIntent().hasExtra("key")){
+//            surveyData = getIntent().getStringArrayExtra("key");
+//        }
+//        else {
+//            throw new IllegalArgumentException("Activity cannot find extras " + "key");
+//        }
+
+        //EXAMPLE: All results can be outputted like so:
+//        for (int i = 0; i < surveyData.length; i++) {
+//            if (surveyData[i] != "") {
+//                System.out.println(surveyData[i]);
+//            }
+//        }
+
         setContentView(R.layout.activity_search);
 
         editTextSearchTerm = (EditText)findViewById(R.id.editTextSearchTerm);
