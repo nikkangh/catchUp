@@ -42,5 +42,6 @@ dependencies {
     compile('com.appyvet:materialrangebar:1.4.1') {
         exclude module: 'support-compat'
     }
+    compile 'com.google.android.gms:play-services:9.8.0'
 }
 apply plugin: 'com.google.gms.google-services'
