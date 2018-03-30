@@ -11,6 +11,13 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="edu.usc.cs404.catchup.SurveyActivity">
 
+    <Button
+        android:id="@+id/invite"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/invite"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"/>
 
     <TextView
         android:id="@+id/textView2"

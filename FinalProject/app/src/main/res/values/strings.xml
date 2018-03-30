@@ -6,8 +6,11 @@
     <string name="log_in">Log In</string>
     <string name="enter_your_work_hours">Enter your work hours</string>
     <string name="search">Search</string>
+    <string name="settings">Settings</string>
+    <string name="pick_for_me">Pick For Me</string>
+    <string name="invite">Invite</string>
     <string name="go">Go</string>
-    <string name="search_results_header">%1$d result(s) for \"%2$s\"</string>
+    <string name="search_results_header">%1$d result(s)</string>
     <string name="filler_location">"423 Juniper Ct \n Sunnyvale, CA 94086"</string>
     <string name="filler_name">Home</string>
     <string name="filler_price">$$$</string>

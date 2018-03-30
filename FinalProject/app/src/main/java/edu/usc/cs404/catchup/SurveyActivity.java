@@ -1,6 +1,7 @@
 package edu.usc.cs404.catchup;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -10,22 +11,31 @@ import android.widget.ListView;
 
 import java.io.Console;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static java.sql.DriverManager.println;
 
 public class SurveyActivity extends Activity {
+    public static final String PREFERENCE_FILENAME = "edu.usc.cs404.catchup.pref_file";
+    public static final String PREFERENCE_FOODPREFS = "edu.usc.cs404.catchup.pref_food";
 
     int preSelectedIndex = -1;
+    private Button invite;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_survey);
 
+        SharedPreferences prefs = getSharedPreferences(
+                SurveyActivity.PREFERENCE_FILENAME, MODE_PRIVATE);
+        Set<String> s = prefs.getStringSet(
+                SurveyActivity.PREFERENCE_FOODPREFS, new HashSet<String>());
+
         Button save = (Button) findViewById(R.id.save);
         ListView listView = (ListView) findViewById(R.id.listview);
-        String selectedCuisine = "";
         final String[] results = new String[getResources().getStringArray(R.array.cuisineList).length];
         //final Bundle surveyResults = new Bundle();
 
@@ -54,16 +64,25 @@ public class SurveyActivity extends Activity {
         final CustomAdapter adapter = new CustomAdapter(this, users);
         listView.setAdapter(adapter);
 
+        for (int i = 0; i < users.size(); i++) {
+            if (s.contains(users.get(i).getUserName())) {
+                users.get(i).setSelected(true);
+            }
+        }
+
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //println("test");
+                Set<String> terms = new HashSet<>();
+
                 int counter = 0;
                 for(UserModel user: users){
 
                     if(user.isSelected()) {
                         //System.out.println(user.getUserName());
                         results[counter] = user.getUserName();
+                        terms.add(user.getUserName());
                         counter++;
                     }
                     else {
@@ -73,7 +92,14 @@ public class SurveyActivity extends Activity {
                     //user.isSelected();
                 }
                 //surveyResults.putStringArray("surveyKey",results);
-                Intent i = new Intent(getApplicationContext(), SearchActivity.class);
+
+                SharedPreferences prefs = getSharedPreferences(
+                        PREFERENCE_FILENAME, MODE_PRIVATE);
+                SharedPreferences.Editor prefEditor = prefs.edit();
+                prefEditor.putStringSet(PREFERENCE_FOODPREFS, terms);
+                prefEditor.commit();
+
+                Intent i = new Intent(getApplicationContext(), FoodBankActivity.class);
                 i.putExtra("key", results);
                 startActivity(i);
             }
@@ -98,5 +124,13 @@ public class SurveyActivity extends Activity {
             }
         });
 
+        invite = (Button) findViewById(R.id.invite);
+        invite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(), InviteActivity.class);
+                startActivity(i);
+            }
+        });
     }
 }

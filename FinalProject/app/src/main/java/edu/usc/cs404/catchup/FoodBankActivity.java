@@ -3,6 +3,9 @@ package edu.usc.cs404.catchup;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.location.Location;
+import android.location.LocationManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,9 +14,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -29,14 +34,20 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Random;
+import java.util.Set;
 
 public class FoodBankActivity extends AppCompatActivity {
     public final static String EXTRA_LANGUAGE = "extra_language";
     private final static String TAG = FoodBankActivity.class.getSimpleName();
     private final String token = "Bearer tWAipkg4xbWWob7UL4FOB1WCpYjULYS8YTZE4UATW60-wHE5SuAbCrrQj_EBc0x5OhujYfLqnVQZ6pfi2itHglfkPv4kCn6ObEJxgUSmP0qbVJV7gcNAFlCp5tOhWnYx";
-    private final String initialURL = "https://api.yelp.com/v3/businesses/search?location=losangeles&term=";
+    private final String initialURL = "https://api.yelp.com/v3/businesses/search?location=losangeles&latitude=34.022564&longitude=-118.290867&term=food";
+            //&term=food+";
 
+    private Button settings;
+    private Button pick;
 
     //my added
     //private final String token = "Bearer 2AoB-QZdrxqCUkWLkISbsJP-YwoKP4SrSfswvJg9YYbllhDfJpUEpedhHhgyPUMM25W4rMy" +
@@ -50,6 +61,7 @@ public class FoodBankActivity extends AppCompatActivity {
 
     private RequestQueue queue;
     private CustomAdapter adapter;
+    private ArrayList<String> urls;
     private ArrayList<String> names;
     private ArrayList<String> locations;
     private ArrayList<String> prices;
@@ -66,7 +78,35 @@ public class FoodBankActivity extends AppCompatActivity {
         setContentView(R.layout.fragment_note_list);
         layout = (RelativeLayout) findViewById(R.id.layout);
 
-        if (savedInstanceState == null) {
+        String latlong = "";
+        /*try {
+            LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+            Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            double longitude = location.getLongitude();
+            double latitude = location.getLatitude();
+            latlong = "&latitude=" + Double.toString(latitude) + "&longitude=" + Double.toString(longitude);
+        } catch (SecurityException ex){}
+*/
+
+        Intent intent = getIntent();
+        String[] surveyData = intent.getStringArrayExtra("key");
+
+        settings = (Button) findViewById(R.id.settings);
+        settings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(), SurveyActivity.class);
+                startActivity(i);
+            }
+        });
+
+
+
+        SharedPreferences prefs = getSharedPreferences(
+                SurveyActivity.PREFERENCE_FILENAME, MODE_PRIVATE);
+        Set<String> s = prefs.getStringSet(
+                SurveyActivity.PREFERENCE_FOODPREFS, new HashSet<String>());
+        /*if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
             if (extras == null) {
                 term = "";
@@ -75,15 +115,24 @@ public class FoodBankActivity extends AppCompatActivity {
             }
         } else {
             term = (String) savedInstanceState.getSerializable("STRING_I_NEED");
-        }
+        }*/
 
-        url = initialURL + term; // + "&term=foodbank";
-
+        //url = initialURL + term; // + "&term=foodbank";
 
         listCountries = (ListView) findViewById(R.id.list_countries);
         textViewResultsHeader = (TextView) findViewById(R.id.textViewResultsHeader);
         //Intent i = getIntent();
         //String language = i.getStringExtra(EXTRA_LANGUAGE);
+
+        url = initialURL;
+        //urls = new ArrayList<>();
+        for (String curr: s) {
+            if (!curr.isEmpty()) {
+                url += "+" + curr;
+                //urls.add(initialURL + curr);
+                System.out.println(curr);
+            }
+        }
 
         names = new ArrayList<>();
         locations = new ArrayList<>();
@@ -95,7 +144,10 @@ public class FoodBankActivity extends AppCompatActivity {
 
 
         queue = Volley.newRequestQueue(this);
-        requestJSONParse(url);
+        //for (int i = 0; i < urls.size(); i++) {
+                requestJSONParse(url);
+                //System.out.println(surveyData[i])
+        //}
 
         /*listCountries.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -106,7 +158,20 @@ public class FoodBankActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });*/
+        pick = (Button) findViewById(R.id.pick);
+        pick.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Random rand = new Random();
 
+                // nextInt is normally exclusive of the top value,
+                // so add 1 to make it inclusive
+                int randomNum = rand.nextInt(20);
+
+                Toast.makeText(FoodBankActivity.this,
+                        names.get(randomNum).toString(), Toast.LENGTH_LONG).show();
+            }
+        });
 
     }
 
@@ -114,18 +179,19 @@ public class FoodBankActivity extends AppCompatActivity {
     //as a JSONArray
     public void requestJSONParse(String reqURL) {
 
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url.trim(),
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, reqURL.trim(),
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         // Display the first 500 characters of the response string.
                         try {
-                            Log.d(TAG, "Response is: " + response.substring(0, 500));
+                            //Log.d(TAG, "Response is: " + response.substring(0, 500));
 
                             JSONObject mainObject = new JSONObject(response);
 
                             JSONArray results = mainObject.getJSONArray("businesses");
 
+                            Log.d(TAG, "response length is: " + results.length());
                             for (int i = 0; i < results.length(); i++) {
                                 JSONObject a = results.getJSONObject(i);
                                 if (a.has("name")) {
