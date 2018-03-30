@@ -8,6 +8,11 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.io.Console;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +23,11 @@ public class SurveyActivity extends Activity {
 
     int preSelectedIndex = -1;
 
+    //database stuff
+    private FirebaseAuth firebaseAuth;
+    private DatabaseReference databaseReference;
+    ArrayList<String> preferences = new ArrayList<String>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,6 +37,7 @@ public class SurveyActivity extends Activity {
         ListView listView = (ListView) findViewById(R.id.listview);
         String selectedCuisine = "";
         final String[] results = new String[getResources().getStringArray(R.array.cuisineList).length];
+
         //final Bundle surveyResults = new Bundle();
 
 
@@ -37,19 +48,7 @@ public class SurveyActivity extends Activity {
 
         for (int i = 0; i < getResources().getStringArray(R.array.cuisineList).length; i++)
             users.add(new UserModel(false,getResources().getStringArray(R.array.cuisineList)[i]));
-//        users.add(new UserModel(false, "American"));
-//        users.add(new UserModel(false, "Chinese"));
-//        users.add(new UserModel(false, "Ethiopian"));
-//        users.add(new UserModel(false, "French"));
-//        users.add(new UserModel(false, "Indian"));
-//        users.add(new UserModel(false, "Italian"));
-//        users.add(new UserModel(false, "Japanese"));
-//        users.add(new UserModel(false, "Korean"));
-//        users.add(new UserModel(false, "Mediterranean"));
-//        users.add(new UserModel(false, "Mexican"));
-//        users.add(new UserModel(false, "Peruvian"));
-//        users.add(new UserModel(false, "Spanish"));
-//        users.add(new UserModel(false, "Thai"));
+
 
         final CustomAdapter adapter = new CustomAdapter(this, users);
         listView.setAdapter(adapter);
@@ -74,6 +73,24 @@ public class SurveyActivity extends Activity {
                 }
                 //surveyResults.putStringArray("surveyKey",results);
                 Intent i = new Intent(getApplicationContext(), SearchActivity.class);
+
+                //database stuff
+                databaseReference = FirebaseDatabase.getInstance().getReference(); //get instance of database
+                firebaseAuth = FirebaseAuth.getInstance(); //get instance of authentication
+                FirebaseUser user = firebaseAuth.getCurrentUser(); //get your information
+                User userProperties = new User(); //create object of user properties
+                userProperties.setUsername(user.getEmail()); //add your email to your properties
+
+                for (int x = 0 ; x < results.length; x++) {
+                    preferences.add(results[x]); //convert to ArrayList
+
+                }
+
+                userProperties.setSurveyResults(preferences); //add survey results to your properties
+                databaseReference.child(user.getUid()).setValue(userProperties); //set surveyresults
+
+
+
                 i.putExtra("key", results);
                 startActivity(i);
             }

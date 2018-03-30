@@ -1,5 +1,8 @@
 package edu.usc.cs404.catchup;
 
+import java.util.ArrayList;
+import java.util.Vector;
+
 /**
  * Created by eshitamathur on 5/4/17.
  */
@@ -10,6 +13,10 @@ public class User {
     String username;
     String password;
     String address;
+    ArrayList<String> friends = new ArrayList<String>();
+    ArrayList<String> preferences = new ArrayList<String>();
+
+
 
     // default constructor is needed by Firebase!
     public User() {
@@ -49,7 +56,28 @@ public class User {
         return password;
     }
 
+    public ArrayList<String> MyFriends()    {
+        ArrayList<String> friends = new ArrayList<String>();
+        return(friends);
+    }
+
+    public void addFriend(String username) {
+        friends.add(username);
+    }
+
+    public void setSurveyResults(ArrayList<String> surveyResults) {
+        preferences = surveyResults;
+    }
+
+    public ArrayList<String> getSurveyResults() {
+        return(preferences);
+    }
+
+
+
     public void setPassword(String password) {
         this.password = password;
     }
+
+
 }

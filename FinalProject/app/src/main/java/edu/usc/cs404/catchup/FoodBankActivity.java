@@ -22,12 +22,20 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -36,28 +44,23 @@ public class FoodBankActivity extends AppCompatActivity {
     private final static String TAG = FoodBankActivity.class.getSimpleName();
     private final String token = "Bearer tWAipkg4xbWWob7UL4FOB1WCpYjULYS8YTZE4UATW60-wHE5SuAbCrrQj_EBc0x5OhujYfLqnVQZ6pfi2itHglfkPv4kCn6ObEJxgUSmP0qbVJV7gcNAFlCp5tOhWnYx";
     private final String initialURL = "https://api.yelp.com/v3/businesses/search?location=losangeles&term=";
-
-
-    //my added
-    //private final String token = "Bearer 2AoB-QZdrxqCUkWLkISbsJP-YwoKP4SrSfswvJg9YYbllhDfJpUEpedhHhgyPUMM25W4rMy" +
-    //"YZHOgO1EJ9mAnjHUNeaK6R1-sJrpqd1oSEcP_YcU0dw5YOBOTz14OWXYx";
-    // private final String URL = "https://api.yelp.com/v3/businesses/search?location=94087&term=foodbank";
-
-
     private ListView listCountries;
-
     private TextView textViewResultsHeader;
-
     private RequestQueue queue;
     private CustomAdapter adapter;
     private ArrayList<String> names;
     private ArrayList<String> locations;
     private ArrayList<String> prices;
     private ArrayList<String> ratings;
-
     private RelativeLayout layout;
     private String url;
     private String term;
+
+    private ArrayList<String> surveyPreferences;
+
+    private DatabaseReference databaseReference;
+    private FirebaseAuth firebaseAuth;
+    private User userPreferences;
 
 
     @Override
@@ -65,6 +68,27 @@ public class FoodBankActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_note_list);
         layout = (RelativeLayout) findViewById(R.id.layout);
+
+
+        //database stuff dont touch
+        databaseReference = FirebaseDatabase.getInstance().getReference(); //get database instance
+        firebaseAuth = FirebaseAuth.getInstance(); //get instance of authentication
+
+
+        ValueEventListener postListener = new ValueEventListener() { //get latest info from database
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) { //get the current database snap (hehe like snapchat SO COOL)
+
+                FirebaseUser user = firebaseAuth.getCurrentUser(); //get your information
+                userPreferences = dataSnapshot.child(user.getUid()).getValue(User.class); //get object associated with ur info
+                surveyPreferences = userPreferences.getSurveyResults(); //this should be your survey preferences list
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
+            }
+        };
 
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();

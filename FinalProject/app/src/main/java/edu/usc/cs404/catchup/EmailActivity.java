@@ -18,15 +18,29 @@ import android.app.PendingIntent;
 import android.support.v4.app.NotificationCompat;
 import android.media.RingtoneManager;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.Query;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.ArrayList;
 
 public class EmailActivity extends AppCompatActivity {
 
     private static final String uniqueID = "404404";
+    private DatabaseReference databaseReference;
+    private FirebaseAuth firebaseAuth;
+
+
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_email);
+
+        databaseReference = FirebaseDatabase.getInstance().getReference();
+        firebaseAuth = FirebaseAuth.getInstance();
+
 
         //generate list
         ArrayList<String> list = new ArrayList<String>();
@@ -51,6 +65,10 @@ public class EmailActivity extends AppCompatActivity {
         //Test send email function
         //sendEmail(result);
         //CHECK database to see if email exists. if so, add friends!
+
+
+        //set if email exists
+        //add database user category that they are friends
         try {
             //Code for checking DB
             sendFriendRequest(result);
