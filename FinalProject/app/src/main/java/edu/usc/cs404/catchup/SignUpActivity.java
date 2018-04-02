@@ -16,6 +16,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 //ANALYTICS
 import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.auth.ProviderQueryResult;
 //HOCKEY
 import net.hockeyapp.android.CrashManager;
 import net.hockeyapp.android.UpdateManager;
@@ -127,6 +128,8 @@ public class SignUpActivity extends AppCompatActivity {
                     }
                 });
     }
+
+
 
     @Override
     public void onResume() {

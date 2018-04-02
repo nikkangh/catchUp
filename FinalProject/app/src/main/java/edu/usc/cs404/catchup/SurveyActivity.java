@@ -14,8 +14,14 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import static java.sql.DriverManager.println;
+
+
 
 public class SurveyActivity extends Activity {
     public static final String PREFERENCE_FILENAME = "edu.usc.cs404.catchup.pref_file";
@@ -24,10 +30,17 @@ public class SurveyActivity extends Activity {
     int preSelectedIndex = -1;
     private Button invite;
 
+    private FirebaseAuth firebaseAuth;
+    private DatabaseReference databaseReference;
+    ArrayList<String> preferences = new ArrayList<String>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_survey);
+
+
+
 
         SharedPreferences prefs = getSharedPreferences(
                 SurveyActivity.PREFERENCE_FILENAME, MODE_PRIVATE);
@@ -98,6 +111,29 @@ public class SurveyActivity extends Activity {
                 SharedPreferences.Editor prefEditor = prefs.edit();
                 prefEditor.putStringSet(PREFERENCE_FOODPREFS, terms);
                 prefEditor.commit();
+
+
+                //database
+                databaseReference = FirebaseDatabase.getInstance().getReference(); //get instance of database
+                firebaseAuth = FirebaseAuth.getInstance(); //get instance of authentication
+                FirebaseUser user = firebaseAuth.getCurrentUser(); //get your information
+                User userProperties = new User(); //create object of user properties
+                userProperties.setUsername(user.getEmail()); //add your email to your properties
+
+                for (int x = 0 ; x < results.length; x++) {
+                    if (results[x] != "") {
+                        preferences.add(results[x]); //convert to ArrayList
+                        Log.d("TAG", "putting into preferences: ");
+                        Log.d("TAG", preferences.get(x));
+
+                    }
+
+                }
+
+
+                userProperties.setSurveyResults(preferences); //add survey results to your properties
+                databaseReference.child(user.getUid()).setValue(userProperties); //set surveyresults
+
 
                 Intent i = new Intent(getApplicationContext(), FoodBankActivity.class);
                 i.putExtra("key", results);

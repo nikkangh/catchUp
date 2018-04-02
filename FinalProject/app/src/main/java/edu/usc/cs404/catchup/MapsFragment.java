@@ -37,6 +37,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback{
 
     }
 
+    
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);

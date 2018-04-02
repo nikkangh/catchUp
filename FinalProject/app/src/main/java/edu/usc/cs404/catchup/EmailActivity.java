@@ -1,5 +1,6 @@
 package edu.usc.cs404.catchup;
 
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -18,11 +19,25 @@ import android.app.PendingIntent;
 import android.support.v4.app.NotificationCompat;
 import android.media.RingtoneManager;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.ProviderQueryResult;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.ArrayList;
 
 public class EmailActivity extends AppCompatActivity {
 
     private static final String uniqueID = "404404";
+    private ArrayList<String> friendsList;
+    private DatabaseReference databaseReference;
+    private FirebaseAuth firebaseAuth;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,6 +57,10 @@ public class EmailActivity extends AppCompatActivity {
 
     }
 
+
+
+
+
     public void get(View v){
         EditText edit = (EditText)findViewById(R.id.emailText);
         String result = edit.getText().toString();
@@ -51,8 +70,13 @@ public class EmailActivity extends AppCompatActivity {
         //Test send email function
         //sendEmail(result);
         //CHECK database to see if email exists. if so, add friends!
+
+
+
         try {
-            //Code for checking DB
+
+
+
             sendFriendRequest(result);
             Toast.makeText(getApplicationContext(), "Friend-Name Added!",
                     Toast.LENGTH_LONG).show();
@@ -65,6 +89,10 @@ public class EmailActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
+
+
+
+
 
     public void sendFriendRequest(String email){
 

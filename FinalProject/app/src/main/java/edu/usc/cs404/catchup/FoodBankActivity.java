@@ -38,6 +38,13 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class FoodBankActivity extends AppCompatActivity {
     public final static String EXTRA_LANGUAGE = "extra_language";
@@ -48,6 +55,11 @@ public class FoodBankActivity extends AppCompatActivity {
 
     private Button settings;
     private Button pick;
+
+    //Database Addition
+    private ArrayList<String> surveyPreferences;
+    private DatabaseReference databaseReference;
+    private FirebaseAuth firebaseAuth;
 
     //my added
     //private final String token = "Bearer 2AoB-QZdrxqCUkWLkISbsJP-YwoKP4SrSfswvJg9YYbllhDfJpUEpedhHhgyPUMM25W4rMy" +
@@ -173,6 +185,44 @@ public class FoodBankActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    //database retrieving info
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        //database stuff dont touch
+        databaseReference = FirebaseDatabase.getInstance().getReference(); //get instance of database
+
+        Log.d("TAG", "GOING INTO DATABASE");
+
+        ValueEventListener userListener = new ValueEventListener() { //get latest info from database
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) { //get the current database snap (hehe like snapchat SO COOL)
+
+
+                firebaseAuth = FirebaseAuth.getInstance(); //get instance of authentication
+                FirebaseUser user = firebaseAuth.getCurrentUser(); //get your information
+
+                User sample;
+                sample = dataSnapshot.child(user.getUid()).getValue(User.class); //get object associated with ur info
+                surveyPreferences = sample.getSurveyResults(); //this should be your survey preferences list
+
+                Log.d("TAG", "I FUCKING DID IT FUCK DATABASES");
+                for (int i = 0; i < surveyPreferences.size(); i++) {
+
+                    Log.d("TAG", surveyPreferences.get(i).toString());
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.w("hi", "loadPost:onCancelled", databaseError.toException());
+            }
+        };
+        databaseReference.addValueEventListener(userListener);
     }
 
     //IMPORTANT NOTE: unlike the HTTP version, this JSON is already returned
