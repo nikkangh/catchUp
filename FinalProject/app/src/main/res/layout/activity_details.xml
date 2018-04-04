@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/constraintLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBackground"
+    tools:context="edu.usc.cs404.catchup.DetailsActivity"
+    tools:layout_editor_absoluteY="25dp">
+
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="384dp"
+        android:layout_height="567dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="start"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/name"
+                        android:layout_width="match_parent"
+                        android:layout_height="36dp"
+                        android:gravity="left|center"
+                        android:paddingBottom="8dp"
+                        android:text="@string/filler_name"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="20dp"
+                        tools:layout_editor_absoluteX="64dp"
+                        tools:layout_editor_absoluteY="41dp" />
+
+                    <TextView
+                        android:id="@+id/category"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Category"
+                        android:textColor="@color/colorBlack"
+                        tools:layout_editor_absoluteX="64dp"
+                        tools:layout_editor_absoluteY="77dp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="end"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/price"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/filler_price"
+                        android:textColor="@color/colorDarkGrey"
+                        tools:layout_editor_absoluteX="296dp"
+                        tools:layout_editor_absoluteY="121dp" />
+
+                    <TextView
+                        android:id="@+id/location"
+                        android:layout_width="match_parent"
+                        android:layout_height="43dp"
+                        android:text="@string/filler_location"
+                        android:textColor="@color/colorDarkGrey"
+                        tools:layout_editor_absoluteX="63dp"
+                        tools:layout_editor_absoluteY="220dp" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="72dp"
+                android:layout_weight="2"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/rating"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/filler_rating"
+                        android:textColor="@color/gold"
+                        android:textSize="30dp"
+                        tools:layout_editor_absoluteX="64dp"
+                        tools:layout_editor_absoluteY="121dp" />
+
+                    <TextView
+                        android:id="@+id/numReviews"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="numReviews"
+                        android:textColor="@color/colorBlack"
+                        tools:layout_editor_absoluteX="64dp"
+                        tools:layout_editor_absoluteY="161dp" />
+                </LinearLayout>
+
+                <CheckBox
+                    android:id="@+id/saveFavorite"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:buttonTint="@color/colorAccent"
+                    android:text="Bookmark"
+                    android:textColor="@color/colorBlack"
+                    tools:layout_editor_absoluteX="257dp"
+                    tools:layout_editor_absoluteY="77dp" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/numFriends"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="number of Friends interested"
+                android:textColor="@color/colorBlack" />
+
+            <ImageView
+                android:id="@+id/imageView2"
+                android:layout_width="match_parent"
+                android:layout_height="221dp"
+                app:srcCompat="@android:drawable/ic_menu_gallery"
+                tools:layout_editor_absoluteX="1dp"
+                tools:layout_editor_absoluteY="269dp" />
+
+            <com.google.android.gms.maps.MapView
+                android:id="@+id/mapView"
+                android:layout_width="match_parent"
+                android:layout_height="196dp"
+                tools:layout_editor_absoluteX="91dp"
+                tools:layout_editor_absoluteY="507dp" />
+        </LinearLayout>
+    </ScrollView>
+
+</android.support.constraint.ConstraintLayout>
