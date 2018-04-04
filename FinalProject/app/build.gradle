@@ -11,7 +11,7 @@ android {
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         manifestPlaceholders = [HOCKEYAPP_APP_ID: "27c61feac6cf48738b10a90b8ab7b30d"]
-
+        multiDexEnabled true
     }
     buildTypes {
         release {
