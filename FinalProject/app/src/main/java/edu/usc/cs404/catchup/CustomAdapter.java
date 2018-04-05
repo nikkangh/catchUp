@@ -65,7 +65,7 @@ public class CustomAdapter extends BaseAdapter {
 
             holder = new ViewHolder();
 
-            holder.tvUserName = (TextView)view.findViewById(R.id.tv_user_name);
+            holder.tvUserName = (TextView)view.findViewById(R.id.option);
             holder.ivCheckBox = (ImageView) view.findViewById(R.id.iv_check_box);
 
             view.setTag(holder);

@@ -20,7 +20,7 @@
         android:layout_alignParentTop="true"
         android:layout_above="@id/editTextSearchTerm"
         android:layout_gravity="center"
-        android:src="@drawable/tomato_icon"
+        android:src="@drawable/tomato"
         android:paddingTop="64dp"
         android:paddingBottom="64dp"/>
 

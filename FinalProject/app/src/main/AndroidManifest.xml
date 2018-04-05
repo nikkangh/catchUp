@@ -7,7 +7,11 @@
     <uses-permission android:name="android.permission.SEND_SMS" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COURSE_LOCATION" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <uses-feature
+        android:glEsVersion="0x00020000"
+        android:required="true" />
 
     <application
         android:allowBackup="true"
@@ -34,18 +38,14 @@
 
         <activity android:name=".SurveyActivity" />
         <activity android:name=".InviteActivity" />
-        <activity android:name=".EmailActivity"></activity>
+        <activity android:name=".EmailActivity" />
 
-        <!--Google maps key-->
+        <!-- Google maps key -->
         <meta-data
             android:name="com.google.android.geo.catchup_key"
-            android:value="AIzaSyA-o_ZC0CvoGDBCqZShyH38DAg02l2AuYI"/>
+            android:value="AIzaSyA-o_ZC0CvoGDBCqZShyH38DAg02l2AuYI" />
 
-
+        <activity android:name=".DetailsActivity"></activity>
     </application>
 
-    <uses-feature
-        android:glEsVersion="0x00020000"
-        android:required="true"
-        />
 </manifest>

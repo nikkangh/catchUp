@@ -9,7 +9,6 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 
-import java.io.Console;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -18,8 +17,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-
-import static java.sql.DriverManager.println;
 
 
 
@@ -124,8 +121,7 @@ public class SurveyActivity extends Activity {
                     if (results[x] != "") {
                         preferences.add(results[x]); //convert to ArrayList
                         Log.d("TAG", "putting into preferences: ");
-                        Log.d("TAG", preferences.get(x));
-
+                        //Log.d("TAG", preferences.get(x));
                     }
 
                 }
@@ -160,13 +156,13 @@ public class SurveyActivity extends Activity {
             }
         });
 
-        invite = (Button) findViewById(R.id.invite);
+        /*invite = (Button) findViewById(R.id.invite);
         invite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(getApplicationContext(), InviteActivity.class);
                 startActivity(i);
             }
-        });
+        });*/
     }
 }

@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:236754495873:android:4067ee378d6b435c",
         "android_client_info": {
-          "package_name": "itp341.mathur.eshita.finalproject"
+          "package_name": "edu.usc.cs404.catchup"
         }
       },
       "oauth_client": [

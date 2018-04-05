@@ -4,7 +4,7 @@ android {
     compileSdkVersion 26
     buildToolsVersion '26.0.2'
     defaultConfig {
-        applicationId "itp341.mathur.eshita.finalproject"
+        applicationId "edu.usc.cs404.catchup"
         minSdkVersion 25
         targetSdkVersion 26
         versionCode 1

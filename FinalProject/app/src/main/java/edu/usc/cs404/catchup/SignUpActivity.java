@@ -19,6 +19,7 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.ProviderQueryResult;
 //HOCKEY
 import net.hockeyapp.android.CrashManager;
+import net.hockeyapp.android.LoginActivity;
 import net.hockeyapp.android.UpdateManager;
 import net.hockeyapp.android.metrics.MetricsManager;
 
@@ -41,16 +42,27 @@ public class SignUpActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
 
+        Intent i = getIntent();
+        String email = i.getStringExtra(LogInActivity.EXTRA_EMAIL);
+        String password = i.getStringExtra(LogInActivity.EXTRA_PASSWORD);
+
         progressDialog = new ProgressDialog(this);
         firebaseAuth = FirebaseAuth.getInstance();
 
         //ANALYTICS
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
+        editTextEmail = (EditText)findViewById(R.id.editTextEmail);
+        if (email != null) {
+            editTextEmail.setText(email);
+        }
+        editTextPassword = (EditText) findViewById(R.id.editTextPassword);
+        if (password != null) {
+            editTextPassword.setText(password);
+        }
+
         buttonLogIn = (Button)findViewById(R.id.buttonLogIn);
         buttonSignUp = (Button)findViewById(R.id.buttonSignUp);
-        editTextEmail = (EditText)findViewById(R.id.editTextEmail);
-        editTextPassword = (EditText)findViewById(R.id.editTextPassword);
 
         buttonLogIn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -64,6 +76,8 @@ public class SignUpActivity extends AppCompatActivity {
                 mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);*/
 
                 Intent i = new Intent(getApplicationContext(), LogInActivity.class);
+                i.putExtra(LogInActivity.EXTRA_EMAIL, editTextEmail.getText().toString());
+                i.putExtra(LogInActivity.EXTRA_PASSWORD, editTextPassword.getText().toString());
                 startActivity(i);
             }
         });

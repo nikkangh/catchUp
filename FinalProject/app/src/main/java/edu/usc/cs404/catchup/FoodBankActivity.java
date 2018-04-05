@@ -1,6 +1,5 @@
 package edu.usc.cs404.catchup;
 
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -207,12 +206,15 @@ public class FoodBankActivity extends AppCompatActivity {
 
                 User sample;
                 sample = dataSnapshot.child(user.getUid()).getValue(User.class); //get object associated with ur info
-                surveyPreferences = sample.getSurveyResults(); //this should be your survey preferences list
 
-                Log.d("TAG", "I FUCKING DID IT FUCK DATABASES");
-                for (int i = 0; i < surveyPreferences.size(); i++) {
+                if (sample != null) {
+                    surveyPreferences = sample.getSurveyResults(); //this should be your survey preferences list
 
-                    Log.d("TAG", surveyPreferences.get(i).toString());
+                    Log.d("TAG", "I FUCKING DID IT FUCK DATABASES");
+                    for (int i = 0; i < surveyPreferences.size(); i++) {
+
+                        Log.d("TAG", surveyPreferences.get(i).toString());
+                    }
                 }
 
             }

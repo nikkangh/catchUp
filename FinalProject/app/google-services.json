@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:236754495873:android:4067ee378d6b435c",
         "android_client_info": {
-          "package_name": "itp341.mathur.eshita.finalproject"
+          "package_name": "edu.usc.cs404.catchup"
         }
       },
       "oauth_client": [
@@ -18,7 +18,7 @@
           "client_id": "236754495873-7rpprbcjjn43qpf57a7ih7e9ve64spcu.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "itp341.mathur.eshita.finalproject",
+            "package_name": "edu.usc.cs404.catchup",
             "certificate_hash": "959a18d8847dabc4c06e17ef69974689b4333c64"
           }
         },

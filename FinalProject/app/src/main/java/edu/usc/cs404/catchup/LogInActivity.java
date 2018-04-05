@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,6 +18,8 @@ import com.google.firebase.auth.FirebaseAuth;
 
 
 public class LogInActivity extends AppCompatActivity {
+    public static final String EXTRA_EMAIL = "edu.usc.cs404.catchup.email";
+    public static final String EXTRA_PASSWORD = "edu.usc.cs404.catchup.password";
 
     private EditText editTextEmail;
     private EditText editTextPassword;
@@ -28,6 +29,7 @@ public class LogInActivity extends AppCompatActivity {
 
     private FirebaseAuth firebaseAuth;
     private ProgressDialog progressDialog;
+
     //ANALYTICS
     private FirebaseAnalytics mFirebaseAnalytics;
 
@@ -36,6 +38,10 @@ public class LogInActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        Intent i = getIntent();
+        String email = i.getStringExtra(EXTRA_EMAIL);
+        String password = i.getStringExtra(EXTRA_PASSWORD);
+
         progressDialog = new ProgressDialog(this);
         firebaseAuth = FirebaseAuth.getInstance();
 
@@ -43,7 +49,14 @@ public class LogInActivity extends AppCompatActivity {
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
         editTextEmail = (EditText) findViewById(R.id.editTextEmail);
+        if (email != null) {
+            editTextEmail.setText(email);
+        }
         editTextPassword = (EditText) findViewById(R.id.editTextPassword);
+        if (password != null) {
+            editTextPassword.setText(password);
+        }
+
         buttonLogIn = (Button) findViewById(R.id.buttonLogIn);
         buttonSignUp = (Button) findViewById(R.id.buttonSignUp);
 
@@ -66,20 +79,13 @@ public class LogInActivity extends AppCompatActivity {
         buttonSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*//ANALYTICS
-                Bundle bundle = new Bundle();
-                bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "2");
-                bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "SignupClick1");
-                bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "LogInActivity");
-                mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);*/
-
                 Intent i = new Intent(getApplicationContext(), SignUpActivity.class);
+                i.putExtra(EXTRA_EMAIL, editTextEmail.getText().toString());
+                i.putExtra(EXTRA_PASSWORD, editTextPassword.getText().toString());
                 startActivity(i);
             }
         });
     }
-
-
 
     private void LogInUser(String email, String password) {
         if (email.isEmpty()) {
@@ -110,7 +116,7 @@ public class LogInActivity extends AppCompatActivity {
 
                             //**NOTE** If user cuisine preference from data base is empty, then go to SURVEY:
                             //Intent i = new Intent(getApplicationContext(), SurveyActivity.class);
-                            Intent i = new Intent(getApplicationContext(), EmailActivity.class);
+                            Intent i = new Intent(getApplicationContext(), FoodBankActivity.class);
                             startActivity(i);
 
                             //ELSE go to SEARCH
