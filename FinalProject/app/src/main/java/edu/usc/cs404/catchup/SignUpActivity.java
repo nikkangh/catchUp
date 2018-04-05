@@ -2,7 +2,6 @@ package edu.usc.cs404.catchup;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -10,16 +9,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 //ANALYTICS
 import com.google.firebase.analytics.FirebaseAnalytics;
-import com.google.firebase.auth.ProviderQueryResult;
 //HOCKEY
 import net.hockeyapp.android.CrashManager;
-import net.hockeyapp.android.LoginActivity;
 import net.hockeyapp.android.UpdateManager;
 import net.hockeyapp.android.metrics.MetricsManager;
 
@@ -45,6 +39,11 @@ public class SignUpActivity extends AppCompatActivity {
         Intent i = getIntent();
         String email = i.getStringExtra(LogInActivity.EXTRA_EMAIL);
         String password = i.getStringExtra(LogInActivity.EXTRA_PASSWORD);
+        boolean loadFailed = i.getBooleanExtra(LoadingActivity.EXTRA_LOADFAILED, false);
+
+        if (loadFailed) {
+            Toast.makeText(SignUpActivity.this, "Sign Up Not Successful, Try Again!", Toast.LENGTH_LONG).show();
+        }
 
         progressDialog = new ProgressDialog(this);
         firebaseAuth = FirebaseAuth.getInstance();
@@ -64,28 +63,9 @@ public class SignUpActivity extends AppCompatActivity {
         buttonLogIn = (Button)findViewById(R.id.buttonLogIn);
         buttonSignUp = (Button)findViewById(R.id.buttonSignUp);
 
-        buttonLogIn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-               /* //ANALYTICS
-                Bundle bundle = new Bundle();
-                bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "1");
-                bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "LoginClick1");
-                bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "SignUpActivity");
-                mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);*/
-
-                Intent i = new Intent(getApplicationContext(), LogInActivity.class);
-                i.putExtra(LogInActivity.EXTRA_EMAIL, editTextEmail.getText().toString());
-                i.putExtra(LogInActivity.EXTRA_PASSWORD, editTextPassword.getText().toString());
-                startActivity(i);
-            }
-        });
-
         buttonSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 //ANALYTICS
                 Bundle bundle = new Bundle();
                 bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "1");
@@ -98,6 +78,17 @@ public class SignUpActivity extends AppCompatActivity {
                 signUpUser(emailString, passwordString);
             }
         });
+
+        buttonLogIn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(), LogInActivity.class);
+                i.putExtra(LogInActivity.EXTRA_EMAIL, editTextEmail.getText().toString());
+                i.putExtra(LogInActivity.EXTRA_PASSWORD, editTextPassword.getText().toString());
+                startActivity(i);
+            }
+        });
+
 
         //HOCKEY
         checkForUpdates();
@@ -123,24 +114,11 @@ public class SignUpActivity extends AppCompatActivity {
         mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
         MetricsManager.trackEvent("LoginClick2");
 
-
-        progressDialog.setMessage("Registering User...");
-        progressDialog.show();
-
-        firebaseAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        progressDialog.dismiss();
-                        if (task.isSuccessful()) {
-                            Intent i = new Intent(getApplicationContext(), SearchActivity.class);
-                            startActivity(i);
-                        }
-                        else {
-                            Toast.makeText(SignUpActivity.this, "Sign Up Not Successful, Try Again!", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
+        Intent i = new Intent(getApplicationContext(), LoadingActivity.class);
+        i.putExtra(LogInActivity.EXTRA_EMAIL, editTextEmail.getText().toString());
+        i.putExtra(LogInActivity.EXTRA_PASSWORD, editTextPassword.getText().toString());
+        i.putExtra(LogInActivity.EXTRA_NEWACCOUNT, true);
+        startActivity(i);
     }
 
 

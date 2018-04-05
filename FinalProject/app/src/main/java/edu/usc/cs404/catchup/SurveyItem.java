@@ -4,17 +4,19 @@ package edu.usc.cs404.catchup;
  * Created by jamestseng on 3/24/18.
  */
 
-public class UserModel {
+public class SurveyItem {
 
     boolean isSelected;
-    String userName;
+    String desc;
 
     //now create constructor and getter setter method using shortcut like command+n for mac & Alt+Insert for window.
+    public SurveyItem() {
 
+    }
 
-    public UserModel(boolean isSelected, String userName) {
+    public SurveyItem(boolean isSelected, String desc) {
         this.isSelected = isSelected;
-        this.userName = userName;
+        this.desc = desc;
     }
 
     public boolean isSelected() {
@@ -25,11 +27,11 @@ public class UserModel {
         isSelected = selected;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getDesc() {
+        return desc;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setDesc(String userName) {
+        this.desc = userName;
     }
 }

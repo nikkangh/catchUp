@@ -14,20 +14,18 @@
     <string name="filler_location">"423 Juniper Ct \n Sunnyvale, CA 94086"</string>
     <string name="filler_name">Home</string>
     <string name="filler_price">$$$</string>
-    <string name="filler_rating">*****</string>s
+    <string name="filler_rating">*****</string>
+    <string name="other">Other...</string>
 
     <string-array name="cuisineList">
         <item>American</item>
         <item>Chinese</item>
-        <item>Ethiopian</item>
-        <item>French</item>
         <item>Indian</item>
         <item>Italian</item>
         <item>Japanese</item>
         <item>Korean</item>
         <item>Mediterranean</item>
         <item>Mexican</item>
-        <item>Peruvian</item>
         <item>Spanish</item>
         <item>Thai</item>
     </string-array>

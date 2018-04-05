@@ -1,9 +1,5 @@
 package edu.usc.cs404.catchup;
 
-/**
- * Created by jamestseng on 3/24/18.
- */
-
 import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,34 +10,29 @@ import android.widget.TextView;
 
 import java.util.List;
 
-/**
- * Created by arthonsystechnologiesllp on 10/03/17.
- */
-
-public class CustomAdapter extends BaseAdapter {
+public class SurveyAdapter extends BaseAdapter {
 
     Activity activity;
-    List<UserModel> users;
+    List<SurveyItem> items;
     LayoutInflater inflater;
 
     //short to create constructer using command+n for mac & Alt+Insert for window
 
-
-    public CustomAdapter(Activity activity) {
+    public SurveyAdapter(Activity activity) {
         this.activity = activity;
     }
 
-    public CustomAdapter(Activity activity, List<UserModel> users) {
-        this.activity   = activity;
-        this.users      = users;
+    public SurveyAdapter(Activity activity, List<SurveyItem> items) {
+        this.activity = activity;
+        this.items = items;
 
-        inflater        = activity.getLayoutInflater();
+        inflater = activity.getLayoutInflater();
     }
 
 
     @Override
     public int getCount() {
-        return users.size();
+        return items.size();
     }
 
     @Override
@@ -72,9 +63,9 @@ public class CustomAdapter extends BaseAdapter {
         }else
             holder = (ViewHolder)view.getTag();
 
-        UserModel model = users.get(i);
+        SurveyItem model = items.get(i);
 
-        holder.tvUserName.setText(model.getUserName());
+        holder.tvUserName.setText(model.getDesc());
 
         if (model.isSelected())
             holder.ivCheckBox.setBackgroundResource(R.drawable.checked);
@@ -83,11 +74,10 @@ public class CustomAdapter extends BaseAdapter {
             holder.ivCheckBox.setBackgroundResource(R.drawable.check);
 
         return view;
-
     }
 
-    public void updateRecords(List<UserModel> users){
-        this.users = users;
+    public void updateRecords(List<SurveyItem> items){
+        this.items = items;
 
         notifyDataSetChanged();
     }

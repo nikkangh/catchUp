@@ -14,7 +14,7 @@ public class User {
     String address;
     boolean userExists = true;
     ArrayList<String> friends = new ArrayList<String>();
-    ArrayList<String> preferences = new ArrayList<String>();
+    ArrayList<SurveyItem> preferences = new ArrayList<SurveyItem>();
 
 
 
@@ -72,14 +72,13 @@ public class User {
         friends.add(username);
     }
 
-    public void setSurveyResults(ArrayList<String> surveyResults) {
+    public void setSurveyResults(ArrayList<SurveyItem> surveyResults) {
         preferences = surveyResults;
     }
 
-    public ArrayList<String> getSurveyResults() {
+    public ArrayList<SurveyItem> getSurveyResults() {
         return(preferences);
     }
-
 
 
     public void setPassword(String password) {

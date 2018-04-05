@@ -113,10 +113,10 @@ public class FoodBankActivity extends AppCompatActivity {
 
 
 
-        SharedPreferences prefs = getSharedPreferences(
+        /*SharedPreferences prefs = getSharedPreferences(
                 SurveyActivity.PREFERENCE_FILENAME, MODE_PRIVATE);
         Set<String> s = prefs.getStringSet(
-                SurveyActivity.PREFERENCE_FOODPREFS, new HashSet<String>());
+                SurveyActivity.PREFERENCE_FOODPREFS, new HashSet<String>());*/
         /*if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
             if (extras == null) {
@@ -137,13 +137,13 @@ public class FoodBankActivity extends AppCompatActivity {
 
         url = initialURL;
         //urls = new ArrayList<>();
-        for (String curr: s) {
+        /*for (String curr: s) {
             if (!curr.isEmpty()) {
                 url += "+" + curr;
                 //urls.add(initialURL + curr);
                 System.out.println(curr);
             }
-        }
+        }*/
 
         names = new ArrayList<>();
         locations = new ArrayList<>();
@@ -192,7 +192,7 @@ public class FoodBankActivity extends AppCompatActivity {
         super.onStart();
 
         //database stuff dont touch
-        databaseReference = FirebaseDatabase.getInstance().getReference(); //get instance of database
+        /*databaseReference = FirebaseDatabase.getInstance().getReference(); //get instance of database
 
         Log.d("TAG", "GOING INTO DATABASE");
 
@@ -201,14 +201,14 @@ public class FoodBankActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) { //get the current database snap (hehe like snapchat SO COOL)
 
 
-                firebaseAuth = FirebaseAuth.getInstance(); //get instance of authentication
+                /*firebaseAuth = FirebaseAuth.getInstance(); //get instance of authentication
                 FirebaseUser user = firebaseAuth.getCurrentUser(); //get your information
 
                 User sample;
                 sample = dataSnapshot.child(user.getUid()).getValue(User.class); //get object associated with ur info
 
                 if (sample != null) {
-                    surveyPreferences = sample.getSurveyResults(); //this should be your survey preferences list
+                   //surveyPreferences = sample.getSurveyResults(); //this should be your survey preferences list
 
                     Log.d("TAG", "I FUCKING DID IT FUCK DATABASES");
                     for (int i = 0; i < surveyPreferences.size(); i++) {
@@ -224,7 +224,7 @@ public class FoodBankActivity extends AppCompatActivity {
                 Log.w("hi", "loadPost:onCancelled", databaseError.toException());
             }
         };
-        databaseReference.addValueEventListener(userListener);
+        databaseReference.addValueEventListener(userListener);*/
     }
 
     //IMPORTANT NOTE: unlike the HTTP version, this JSON is already returned

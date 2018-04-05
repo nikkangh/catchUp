@@ -2,7 +2,6 @@ package edu.usc.cs404.catchup;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -10,20 +9,17 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.analytics.FirebaseAnalytics;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
 
 public class LogInActivity extends AppCompatActivity {
     public static final String EXTRA_EMAIL = "edu.usc.cs404.catchup.email";
     public static final String EXTRA_PASSWORD = "edu.usc.cs404.catchup.password";
+    public static final String EXTRA_NEWACCOUNT = "edu.usc.cs404.catchup.newaccount";
 
     private EditText editTextEmail;
     private EditText editTextPassword;
-
     private Button buttonLogIn;
     private Button buttonSignUp;
 
@@ -41,6 +37,11 @@ public class LogInActivity extends AppCompatActivity {
         Intent i = getIntent();
         String email = i.getStringExtra(EXTRA_EMAIL);
         String password = i.getStringExtra(EXTRA_PASSWORD);
+        boolean loadFailed = i.getBooleanExtra(LoadingActivity.EXTRA_LOADFAILED, false);
+
+        if (loadFailed) {
+            Toast.makeText(LogInActivity.this, "Email/password combo incorrect, try again.", Toast.LENGTH_LONG).show();
+        }
 
         progressDialog = new ProgressDialog(this);
         firebaseAuth = FirebaseAuth.getInstance();
@@ -102,33 +103,11 @@ public class LogInActivity extends AppCompatActivity {
         bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "LogInActivity");
         mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
 
-        progressDialog.setMessage("Signing you in...");
-        progressDialog.show();
-
-        firebaseAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        progressDialog.dismiss();
-
-                        if (task.isSuccessful()) {
-                            //finish();
-
-                            //**NOTE** If user cuisine preference from data base is empty, then go to SURVEY:
-                            //Intent i = new Intent(getApplicationContext(), SurveyActivity.class);
-                            Intent i = new Intent(getApplicationContext(), FoodBankActivity.class);
-                            startActivity(i);
-
-                            //ELSE go to SEARCH
-//                            Intent i = new Intent(getApplicationContext(), SearchActivity.class);
-//                            startActivity(i);
-                        }
-                        else {
-                            Toast.makeText(LogInActivity.this, "Email/password combo incorrect, try again.", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
-
+        Intent i = new Intent(getApplicationContext(), LoadingActivity.class);
+        i.putExtra(EXTRA_EMAIL, editTextEmail.getText().toString());
+        i.putExtra(EXTRA_PASSWORD, editTextPassword.getText().toString());
+        i.putExtra(EXTRA_NEWACCOUNT, false);
+        startActivity(i);
     }
 
 }

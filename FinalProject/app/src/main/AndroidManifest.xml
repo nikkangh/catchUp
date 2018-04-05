@@ -32,8 +32,6 @@
             android:name="net.hockeyapp.android.appIdentifier"
             android:value="27c61feac6cf48738b10a90b8ab7b30d" />
 
-
-
         <activity android:name=".SurveyActivity" />
         <activity android:name=".InviteActivity" />
         <activity android:name=".EmailActivity" />
@@ -55,7 +53,8 @@
 
         <activity
             android:name=".MapsActivity"
-            android:label="AIzaSyCsAWuHQHQKGwS_u1BO29LuwwY7sevJ_bc"></activity>
+            android:label="AIzaSyCsAWuHQHQKGwS_u1BO29LuwwY7sevJ_bc" />
+        <activity android:name=".LoadingActivity"></activity>
     </application>
 
 </manifest>
