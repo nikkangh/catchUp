@@ -54,9 +54,11 @@ public class FoodBankActivity extends AppCompatActivity {
 
     private Button settings;
     private Button pick;
+    private Button viewMap;
 
     //Database Addition
     private ArrayList<String> surveyPreferences;
+    private ArrayList<LocationObject> markerInfo = new ArrayList<>();
     private DatabaseReference databaseReference;
     private FirebaseAuth firebaseAuth;
 
@@ -83,6 +85,7 @@ public class FoodBankActivity extends AppCompatActivity {
     private String term;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -107,6 +110,16 @@ public class FoodBankActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(getApplicationContext(), SurveyActivity.class);
+                startActivity(i);
+            }
+        });
+
+        viewMap = (Button) findViewById(R.id.mapbtn);
+        settings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(), MapsActivity.class);
+                i.putExtra("loc_key", markerInfo);
                 startActivity(i);
             }
         });
@@ -246,8 +259,12 @@ public class FoodBankActivity extends AppCompatActivity {
                             Log.d(TAG, "response length is: " + results.length());
                             for (int i = 0; i < results.length(); i++) {
                                 JSONObject a = results.getJSONObject(i);
+                                double lat = 0;
+                                double longi = 0;
+                                String rName = "";
                                 if (a.has("name")) {
                                     String b = a.getString("name");
+                                    rName = b;
                                     names.add(b);
                                 } else {
                                     names.add("");
@@ -267,6 +284,19 @@ public class FoodBankActivity extends AppCompatActivity {
                                     locations.add("");
                                 }
 
+                                //Grabs coordinates for maps to place markers
+
+                                if (a.has("coordinates")) {
+                                    JSONObject cords = a.getJSONObject("coordinates");
+                                    if(cords.has("latitude") && cords.has("longitude")) {
+                                        lat = cords.getDouble("latitude");
+                                        longi = cords.getDouble("longitude");
+                                        //System.out.println("cords got");
+
+                                    }
+
+                                }
+
                                 if (a.has("price")) {
                                     String c = a.getString("price");
                                     prices.add(c);
@@ -283,6 +313,11 @@ public class FoodBankActivity extends AppCompatActivity {
                                     ratings.add(sb.toString());
                                 } else {
                                     ratings.add("");
+                                }
+                                LocationObject locObj= new LocationObject(lat, longi, rName);
+                                if (lat != 0 && longi !=0 && rName != "") {
+                                    markerInfo.add(locObj);
+                                    //System.out.println("added");
                                 }
                             }
                             System.out.println("STOP");
@@ -339,5 +374,6 @@ public class FoodBankActivity extends AppCompatActivity {
             return convertView;
         }
     }
+
 }
 
