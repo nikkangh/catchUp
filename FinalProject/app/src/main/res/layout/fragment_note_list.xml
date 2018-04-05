@@ -23,6 +23,14 @@
         android:layout_marginBottom="16dp"/>
 
     <Button
+        android:id="@+id/mapbtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="View Map"
+        android:layout_toStartOf="@+id/pick"
+        android:layout_alignParentTop="true"/>
+
+    <Button
         android:id="@+id/pick"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -2,16 +2,12 @@ package edu.usc.cs404.catchup;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.location.Location;
-import android.location.LocationManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -33,17 +29,11 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Random;
-import java.util.Set;
+
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 public class FoodBankActivity extends AppCompatActivity {
     public final static String EXTRA_LANGUAGE = "extra_language";
@@ -54,9 +44,11 @@ public class FoodBankActivity extends AppCompatActivity {
 
     private Button settings;
     private Button pick;
+    private Button viewMap;
 
     //Database Addition
     private ArrayList<String> surveyPreferences;
+    private ArrayList<LocationObject> markerInfo = new ArrayList<>();
     private DatabaseReference databaseReference;
     private FirebaseAuth firebaseAuth;
 
@@ -71,7 +63,7 @@ public class FoodBankActivity extends AppCompatActivity {
     private TextView textViewResultsHeader;
 
     private RequestQueue queue;
-    private CustomAdapter adapter;
+    private ListAdapter adapter;
     private ArrayList<String> urls;
     private ArrayList<String> names;
     private ArrayList<String> locations;
@@ -81,6 +73,7 @@ public class FoodBankActivity extends AppCompatActivity {
     private RelativeLayout layout;
     private String url;
     private String term;
+
 
 
     @Override
@@ -107,6 +100,16 @@ public class FoodBankActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(getApplicationContext(), SurveyActivity.class);
+                startActivity(i);
+            }
+        });
+
+        viewMap = (Button) findViewById(R.id.mapbtn);
+        viewMap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(), MapsActivity.class);
+                i.putExtra("loc_key", markerInfo);
                 startActivity(i);
             }
         });
@@ -149,7 +152,7 @@ public class FoodBankActivity extends AppCompatActivity {
         locations = new ArrayList<>();
         prices = new ArrayList<>();
         ratings = new ArrayList<>();
-        adapter = new CustomAdapter(this,names);
+        adapter = new ListAdapter(this,names);
         listCountries.setAdapter(adapter);
 
 
@@ -246,8 +249,12 @@ public class FoodBankActivity extends AppCompatActivity {
                             Log.d(TAG, "response length is: " + results.length());
                             for (int i = 0; i < results.length(); i++) {
                                 JSONObject a = results.getJSONObject(i);
+                                double lat = 0;
+                                double longi = 0;
+                                String rName = "";
                                 if (a.has("name")) {
                                     String b = a.getString("name");
+                                    rName = b;
                                     names.add(b);
                                 } else {
                                     names.add("");
@@ -267,6 +274,19 @@ public class FoodBankActivity extends AppCompatActivity {
                                     locations.add("");
                                 }
 
+                                //Grabs coordinates for maps to place markers
+
+                                if (a.has("coordinates")) {
+                                    JSONObject cords = a.getJSONObject("coordinates");
+                                    if(cords.has("latitude") && cords.has("longitude")) {
+                                        lat = cords.getDouble("latitude");
+                                        longi = cords.getDouble("longitude");
+                                        //System.out.println("cords got");
+
+                                    }
+
+                                }
+
                                 if (a.has("price")) {
                                     String c = a.getString("price");
                                     prices.add(c);
@@ -283,6 +303,11 @@ public class FoodBankActivity extends AppCompatActivity {
                                     ratings.add(sb.toString());
                                 } else {
                                     ratings.add("");
+                                }
+                                LocationObject locObj= new LocationObject(lat, longi, rName);
+                                if (lat != 0 && longi !=0 && rName != "") {
+                                    markerInfo.add(locObj);
+                                    //System.out.println("added");
                                 }
                             }
                             System.out.println("STOP");
@@ -310,13 +335,13 @@ public class FoodBankActivity extends AppCompatActivity {
         queue.add(stringRequest);
     }
 
-    class CustomAdapter extends ArrayAdapter<String>
+    class ListAdapter extends ArrayAdapter<String>
     {
 
         protected Context mContext;
         protected ArrayList<String> mNames;
 
-        public CustomAdapter(Context context, ArrayList<String> names) {
+        public ListAdapter(Context context, ArrayList<String> names) {
             super(context, R.layout.list_item, names); // Use a custom layout file
             mContext = context;
             mNames = names;
@@ -339,5 +364,6 @@ public class FoodBankActivity extends AppCompatActivity {
             return convertView;
         }
     }
+
 }
 
