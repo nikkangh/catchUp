@@ -82,7 +82,10 @@ public class SurveyActivity extends Activity {
                     // Perform action on key press
                     List<String> newItems = Arrays.asList(editText.getText().toString().split(","));
                     for (int i = 0; i < newItems.size(); i++) {
-                        items.add(new SurveyItem(true, newItems.get(i).trim()));
+                        String newItem = newItems.get(i).trim();
+                        if (!newItem.isEmpty()) {
+                            items.add(new SurveyItem(true, newItem));
+                        }
                     }
                     adapter.notifyDataSetChanged();
                     listView.smoothScrollToPosition(items.size()-1);
@@ -125,7 +128,10 @@ public class SurveyActivity extends Activity {
             public void onClick(View v) {
                 List<String> newItems = Arrays.asList(editText.getText().toString().split(","));
                 for (int i = 0; i < newItems.size(); i++) {
-                    items.add(new SurveyItem(true, newItems.get(i).trim()));
+                    String newItem = newItems.get(i).trim();
+                    if (!newItem.isEmpty()) {
+                        items.add(new SurveyItem(true, newItem));
+                    }
                 }
                 editText.setText("");
 

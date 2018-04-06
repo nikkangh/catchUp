@@ -57,12 +57,13 @@ public class FoodBankActivity extends AppCompatActivity {
     //"YZHOgO1EJ9mAnjHUNeaK6R1-sJrpqd1oSEcP_YcU0dw5YOBOTz14OWXYx";
     // private final String URL = "https://api.yelp.com/v3/businesses/search?location=94087&term=foodbank";
 
-
+    static private ListAdapter adapter;
     private ListView listCountries;
 
     private TextView textViewResultsHeader;
+    private RelativeLayout layout;
 
-    private RequestQueue queue;
+    /*private RequestQueue queue;
     private ListAdapter adapter;
     private ArrayList<String> urls;
     private ArrayList<String> names;
@@ -70,9 +71,8 @@ public class FoodBankActivity extends AppCompatActivity {
     private ArrayList<String> prices;
     private ArrayList<String> ratings;
 
-    private RelativeLayout layout;
     private String url;
-    private String term;
+    private String term;*/
 
 
 
@@ -81,6 +81,7 @@ public class FoodBankActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_note_list);
         layout = (RelativeLayout) findViewById(R.id.layout);
+        DataModel.getInstance().setContext(FoodBankActivity.this);
 
         String latlong = "";
         /*try {
@@ -134,11 +135,14 @@ public class FoodBankActivity extends AppCompatActivity {
         //url = initialURL + term; // + "&term=foodbank";
 
         listCountries = (ListView) findViewById(R.id.list_countries);
+        adapter = new ListAdapter(FoodBankActivity.this, R.id.list_countries, new ArrayList<LocationObject>());
+        listCountries.setAdapter(adapter);
+
         textViewResultsHeader = (TextView) findViewById(R.id.textViewResultsHeader);
         //Intent i = getIntent();
         //String language = i.getStringExtra(EXTRA_LANGUAGE);
 
-        url = initialURL;
+        //url = initialURL;
         //urls = new ArrayList<>();
         /*for (String curr: s) {
             if (!curr.isEmpty()) {
@@ -148,12 +152,10 @@ public class FoodBankActivity extends AppCompatActivity {
             }
         }*/
 
-        names = new ArrayList<>();
+        /*names = new ArrayList<>();
         locations = new ArrayList<>();
         prices = new ArrayList<>();
         ratings = new ArrayList<>();
-        adapter = new ListAdapter(this,names);
-        listCountries.setAdapter(adapter);
 
 
 
@@ -161,7 +163,7 @@ public class FoodBankActivity extends AppCompatActivity {
         //for (int i = 0; i < urls.size(); i++) {
                 requestJSONParse(url);
                 //System.out.println(surveyData[i])
-        //}
+        //}*/
 
         /*listCountries.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -172,7 +174,7 @@ public class FoodBankActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });*/
-        pick = (Button) findViewById(R.id.pick);
+        /*pick = (Button) findViewById(R.id.pick);
         pick.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -185,7 +187,7 @@ public class FoodBankActivity extends AppCompatActivity {
                 Toast.makeText(FoodBankActivity.this,
                         names.get(randomNum).toString(), Toast.LENGTH_LONG).show();
             }
-        });
+        });*/
 
     }
 
@@ -232,7 +234,7 @@ public class FoodBankActivity extends AppCompatActivity {
 
     //IMPORTANT NOTE: unlike the HTTP version, this JSON is already returned
     //as a JSONArray
-    public void requestJSONParse(String reqURL) {
+    /*public void requestJSONParse(String reqURL) {
 
         StringRequest stringRequest = new StringRequest(Request.Method.GET, reqURL.trim(),
                 new Response.Listener<String>() {
@@ -333,37 +335,39 @@ public class FoodBankActivity extends AppCompatActivity {
         };
 
         queue.add(stringRequest);
-    }
+    }*/
 
-    class ListAdapter extends ArrayAdapter<String>
-    {
+    class ListAdapter extends ArrayAdapter {
+        private TextView restaurantName;
 
-        protected Context mContext;
-        protected ArrayList<String> mNames;
+        public ListAdapter(Context c, int resId, ArrayList<LocationObject> _content) {
+            super(c, resId, _content); // Use a custom layout file
+        }
 
-        public ListAdapter(Context context, ArrayList<String> names) {
-            super(context, R.layout.list_item, names); // Use a custom layout file
-            mContext = context;
-            mNames = names;
+        public int getCount() {
+            return DataModel.getInstance().getDataCount();
         }
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            System.out.println("enters");
             if(convertView == null){
-                convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_item,null);
+                convertView = getLayoutInflater().inflate(R.layout.list_item,null);
             }
 
-            // You'll need to use the mItems array to populate these...
-            ((TextView) convertView.findViewById(R.id.name)).setText(names.get(position));
-            ((TextView) convertView.findViewById(R.id.location)).setText(locations.get(position));
-            ((TextView) convertView.findViewById(R.id.rating)).setText(ratings.get(position));
-            ((TextView) convertView.findViewById(R.id.price)).setText(prices.get(position));
+            LocationObject loc = DataModel.getInstance().getLocationObjectAtIndex(position);
 
-            textViewResultsHeader.setText(String.format(getString(R.string.search_results_header), mNames.size(), term));
+            restaurantName = (TextView) convertView.findViewById(R.id.name);
+            restaurantName.setText(loc.getRestaurantName());
+
+
+            textViewResultsHeader.setText(String.format(getString(R.string.search_results_header), DataModel.getInstance().getDataCount()));
             return convertView;
         }
     }
 
+
+    static public void update() {
+        adapter.notifyDataSetChanged();
+    }
 }
 

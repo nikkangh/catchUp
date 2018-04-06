@@ -34,4 +34,20 @@ public class SurveyItem {
     public void setDesc(String userName) {
         this.desc = userName;
     }
+
+    public boolean equals(Object o){
+
+        if(o instanceof SurveyItem){
+
+            SurveyItem i = (SurveyItem) o;
+            if((i.isSelected==this.isSelected)&&(i.desc.equals(this.desc)))
+            {
+                return true;
+            }
+            else return false;
+
+        }
+
+        return false;
+    }
 }
