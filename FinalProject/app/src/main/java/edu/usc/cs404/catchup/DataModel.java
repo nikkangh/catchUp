@@ -87,7 +87,7 @@ public class DataModel implements Serializable {
         for (int i = 0; i < newItems.size(); i++) {
             //find if item exists already
             int foundIndex = -1;
-            for (int j = 0; i < currItems.size() && foundIndex == -1; j++) {
+            for (int j = 0; j < currItems.size() && foundIndex == -1; j++) {
                 if (currItems.get(j).getDesc().equals(newItems.get(i).getDesc())) {
                     foundIndex = j;
                 }
