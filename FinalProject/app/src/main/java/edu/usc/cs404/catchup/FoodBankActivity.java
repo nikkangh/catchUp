@@ -110,7 +110,7 @@ public class FoodBankActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(getApplicationContext(), MapsActivity.class);
-                i.putExtra("loc_key", markerInfo);
+                //i.putExtra("loc_key", markerInfo);
                 startActivity(i);
             }
         });
