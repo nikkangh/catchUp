@@ -11,11 +11,22 @@ import java.util.Map;
 
 public class User {
     String username;
-    HashMap<String, String> friends = new HashMap<String, String>();
+    String UID;
+    HashMap<String, String> friends = new HashMap<>();
 
     // default constructor is needed by Firebase!
     public User() {
+
         friends.put(username, "Confirmed");
+    }
+
+    public void setUID(String UID) {
+        this.UID = UID;
+
+    }
+
+    public String getUID ( ) {
+        return UID;
     }
 
     public String getUsername() {

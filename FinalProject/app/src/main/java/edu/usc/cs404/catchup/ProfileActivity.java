@@ -84,7 +84,7 @@ public class ProfileActivity extends Fragment{
         String addressString = address.getText().toString();
 
         User newUser = new User();
-       
+
 
         //firebase getting user to store info
         FirebaseUser user = firebaseAuth.getCurrentUser();

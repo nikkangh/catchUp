@@ -38,6 +38,10 @@ public class EmailActivity extends AppCompatActivity {
     private ArrayList<String> friendsList;
     private DatabaseReference databaseReference;
     private FirebaseAuth firebaseAuth;
+    private FirebaseUser firebaseUser;
+    private FriendsDBHandler DBHandler = new FriendsDBHandler();
+
+
 
     public ArrayList<String> list;
 
@@ -47,6 +51,10 @@ public class EmailActivity extends AppCompatActivity {
 
         //generate list
         list = new ArrayList<String>();
+
+
+
+
 //        list.add("item1");
 //        list.add("item2");
 //
@@ -88,7 +96,6 @@ public class EmailActivity extends AppCompatActivity {
         try {
 
 
-
             sendFriendRequest(result);
             Toast.makeText(getApplicationContext(), "Friend-Name Added!",
                     Toast.LENGTH_LONG).show();
@@ -107,6 +114,9 @@ public class EmailActivity extends AppCompatActivity {
 
 
     public void sendFriendRequest(String email){
+
+
+        DBHandler.pendingFriends(email);
 
         Uri alarmSound = RingtoneManager.getActualDefaultRingtoneUri(this, RingtoneManager.TYPE_NOTIFICATION);
 
@@ -164,7 +174,7 @@ public class EmailActivity extends AppCompatActivity {
         try {
             startActivity(Intent.createChooser(emailIntent, "Send mail..."));
             finish();
-            Log.i("Finished sending email...", "");
+            Log.i("Finish sending email...", "");
         } catch (android.content.ActivityNotFoundException ex) {
             Toast.makeText(EmailActivity.this,
                     "There is no email client installed.", Toast.LENGTH_SHORT).show();
