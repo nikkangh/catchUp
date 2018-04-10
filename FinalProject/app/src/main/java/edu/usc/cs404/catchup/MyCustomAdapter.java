@@ -17,7 +17,7 @@ import java.util.ArrayList;
  */
 
 public class MyCustomAdapter extends BaseAdapter implements ListAdapter {
-    private ArrayList<String> list = new ArrayList<String>();
+    public ArrayList<String> list = new ArrayList<String>();
     private Context context;
 
 
