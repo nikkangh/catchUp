@@ -15,11 +15,15 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
+import java.util.Map;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener {
+    public static final String EXTRA_MARKERTAG = "edu.usc.cs404.catchup.markertag";
+
 
     private GoogleMap mMap;
     private ArrayList<LocationObject> markerPoints;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,9 +35,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mapFragment.getMapAsync(this);
 
         Intent intent = getIntent();
-        markerPoints = (ArrayList<LocationObject>) intent.getSerializableExtra("loc_key");
+        markerPoints = DataModel.getInstance().getData();
 
     }
+
+
+
 
 
     /**
@@ -49,6 +56,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
+        mMap.setOnInfoWindowClickListener(this);
         // Add a marker in Sydney and move the camera
 //        LatLng sydney = new LatLng(-34, 151);
 //        LatLng MELBOURNE = new LatLng(-37.81319, 144.96298);
@@ -63,9 +71,24 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         for (int i = 0; i < markerPoints.size(); i++) {
             String name = markerPoints.get(i).restaurantName;
             LatLng point = new LatLng(markerPoints.get(i).latitude,markerPoints.get(i).longitude);
-            mMap.addMarker(new MarkerOptions().position(point).title(name));
+            Marker marker = mMap.addMarker(new MarkerOptions()
+                    .position(point)
+                    .title(name)
+                    .snippet("Click for more info")
+            );
+            marker.setTag(i);
         }
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(fll));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(fll, 11));
     }
 
+    @Override
+    public void onInfoWindowClick(Marker marker) {
+        //System.out.println("Infowindow being clicked");
+        Intent i = new Intent(MapsActivity.this, DetailsActivity.class);
+
+        i.putExtra(EXTRA_MARKERTAG, (int)(marker.getTag()));
+        //TODO: Add functionality to go to Activity page
+        startActivity(i);
+
+    }
 }

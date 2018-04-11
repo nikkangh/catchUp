@@ -39,21 +39,23 @@ public class EmailActivity extends AppCompatActivity {
     private DatabaseReference databaseReference;
     private FirebaseAuth firebaseAuth;
 
+    public ArrayList<String> list;
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_email);
 
         //generate list
-        ArrayList<String> list = new ArrayList<String>();
-        list.add("item1");
-        list.add("item2");
-
-        //instantiate custom adapter
-        MyCustomAdapter adapter = new MyCustomAdapter(list, this);
-
-        //handle listview and assign adapter
-        ListView lView = (ListView)findViewById(R.id.notificationView);
-        lView.setAdapter(adapter);
+        list = new ArrayList<String>();
+//        list.add("item1");
+//        list.add("item2");
+//
+//        //instantiate custom adapter
+//        MyCustomAdapter adapter = new MyCustomAdapter(list, this);
+//
+//        //handle listview and assign adapter
+//        ListView lView = (ListView)findViewById(R.id.notificationView);
+//        lView.setAdapter(adapter);
 
     }
 
@@ -70,6 +72,16 @@ public class EmailActivity extends AppCompatActivity {
         //Test send email function
         //sendEmail(result);
         //CHECK database to see if email exists. if so, add friends!
+
+        list.add(result);
+
+        //instantiate custom adapter
+        MyCustomAdapter adapter = new MyCustomAdapter(list, this);
+
+        //handle listview and assign adapter
+        ListView lView = (ListView)findViewById(R.id.notificationView);
+        lView.setAdapter(adapter);
+        getWindow().getDecorView().findViewById(android.R.id.content).invalidate();
 
 
 

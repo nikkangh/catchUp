@@ -1,6 +1,8 @@
 package edu.usc.cs404.catchup;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by eshitamathur on 5/4/17.
@@ -8,81 +10,50 @@ import java.util.ArrayList;
 
 
 public class User {
-    String name;
     String username;
-    String password;
-    String address;
-    boolean userExists = true;
-    ArrayList<String> friends = new ArrayList<String>();
-    ArrayList<SurveyItem> preferences = new ArrayList<SurveyItem>();
-
-
+    HashMap<String, String> friends = new HashMap<String, String>();
 
     // default constructor is needed by Firebase!
     public User() {
-    }
-
-    public User(String name, String username, String password){
-        this.name = name;
-        this.username = username;
-        this.password = password;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+        friends.put(username, "Confirmed");
     }
 
     public String getUsername() {
         return username;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
     public void setUsername(String username) {
         this.username = username;
     }
 
-    public String getPassword() {
-        return password;
+    public ArrayList<String> getFriends()    {
+
+        ArrayList<String> myFriends = new ArrayList<>();
+        for (Map.Entry<String, String> e : friends.entrySet()) {
+            if (e.getValue().contains("Confirmed")) {
+                myFriends.add(e.getKey());
+            }
+        }
+
+        return myFriends;
+
     }
 
-    public ArrayList<String> myFriends()    {
-        return(friends);
+    public void createPendingFriend(String friendUsername) {
+
+        friends.put(friendUsername, "Pending");
     }
 
-    public void emailDoesNotExist() {
-        userExists = false;
+    public void deletePendingFriend(String username) {
+        friends.remove(username);
     }
 
-    public boolean emailExist() {
-        return userExists;
-    }
-
-    public void addFriend(String username) {
-        friends.add(username);
-    }
-
-    public void setSurveyResults(ArrayList<SurveyItem> surveyResults) {
-        preferences = surveyResults;
-    }
-
-    public ArrayList<SurveyItem> getSurveyResults() {
-        return(preferences);
-    }
-
-
-    public void setPassword(String password) {
-        this.password = password;
+    public void confirmedFriend(String username ) {
+        for (Map.Entry<String, String> e : friends.entrySet()) {
+            if (e.getKey().startsWith("username")) {
+                friends.put(username, "Confirmed");
+            }
+        }
     }
 
 
