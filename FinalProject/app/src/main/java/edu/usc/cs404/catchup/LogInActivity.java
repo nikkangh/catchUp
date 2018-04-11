@@ -103,7 +103,7 @@ public class LogInActivity extends AppCompatActivity {
         bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "LogInActivity");
         mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
 
-        Intent i = new Intent(getApplicationContext(), EmailActivity.class);
+        Intent i = new Intent(getApplicationContext(), FoodBankActivity.class);
         i.putExtra(EXTRA_EMAIL, editTextEmail.getText().toString());
         i.putExtra(EXTRA_PASSWORD, editTextPassword.getText().toString());
         i.putExtra(EXTRA_NEWACCOUNT, false);
