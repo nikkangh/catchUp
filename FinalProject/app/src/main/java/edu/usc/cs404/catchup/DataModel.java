@@ -27,7 +27,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 public class DataModel implements Serializable {
     private static final DataModel ourInstance = new DataModel();
@@ -100,6 +102,7 @@ public class DataModel implements Serializable {
             } else {
                 if (foundIndex != -1) {
                     itemToLocation.remove(currItems.get(foundIndex));
+                    update();
                 }
             }
 
@@ -133,6 +136,7 @@ public class DataModel implements Serializable {
                             for (int i = 0; i < results.length(); i++) {
                                 JSONObject a = results.getJSONObject(i);
 
+                                String id = "";
                                 String restaurantName = "";
                                 String imageUrl = "";
                                 boolean isClosed = false;
@@ -147,6 +151,10 @@ public class DataModel implements Serializable {
                                 String phone = "";
                                 double distance = 0.0;
 
+
+                                if (a.has("id")) {
+                                    id = a.getString("id");
+                                }
                                 if (a.has("name")) {
                                     restaurantName = a.getString("name");
                                 }
@@ -205,9 +213,10 @@ public class DataModel implements Serializable {
                                 }
                                 if (a.has("distance")) {
                                     distance = a.getDouble("distance");
+                                    distance *= 0.000621371;
                                 }
 
-                                LocationObject locObj= new LocationObject(restaurantName, imageUrl,
+                                LocationObject locObj= new LocationObject(id, restaurantName, imageUrl,
                                 isClosed, reviewCount, categories, rating, transactions, price,
                                         location, latitude, longitude, phone, distance);
 
@@ -243,19 +252,27 @@ public class DataModel implements Serializable {
 
     private void addData(SurveyItem item, ArrayList<LocationObject> newLocs) {
         itemToLocation.put(item, newLocs);
+
+        update();
+    }
+
+    public void update() {
+        //remake final list
+        finalList.clear();
+        Set<LocationObject> removeDuplicates = new HashSet<LocationObject>();
+        for (ArrayList<LocationObject> curr: itemToLocation.values()) {
+            //finalList.addAll(curr);
+            removeDuplicates.addAll(curr);
+        }
+        finalList.addAll(removeDuplicates);
+        finalList.sort(new LocComparator());
+
         FoodBankActivity.update();
     }
 
 
     public ArrayList<LocationObject> getData() {
-        ArrayList<LocationObject> retList = new ArrayList<LocationObject>();
-        Collection<ArrayList<LocationObject>> allLocs = itemToLocation.values();
-        for (ArrayList<LocationObject> curr: allLocs) {
-            retList.addAll(curr);
-        }
-        retList.sort(new LocComparator());
-        finalList = retList;
-        return retList;
+        return finalList;
     }
 
     static class LocComparator implements Comparator<LocationObject>
@@ -267,7 +284,6 @@ public class DataModel implements Serializable {
     }
 
     public int getDataCount() {
-        getData();
         return finalList.size();
     }
 

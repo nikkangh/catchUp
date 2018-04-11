@@ -13,8 +13,11 @@
     <string name="search_results_header">%1$d result(s)</string>
     <string name="filler_location">"423 Juniper Ct \n Sunnyvale, CA 94086"</string>
     <string name="filler_name">Home</string>
+    <string name="filler_category">brunch</string>
     <string name="filler_price">$$$</string>
     <string name="filler_rating">*****</string>
+    <string name="num_reviews">%1$d reviews</string>
+    <string name="num_distance">%1$.2f mi</string>
     <string name="other">Other...</string>
 
     <string-array name="cuisineList">

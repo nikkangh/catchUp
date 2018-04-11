@@ -35,6 +35,7 @@ public class SurveyItem {
         this.desc = userName;
     }
 
+    @Override
     public boolean equals(Object o){
 
         if(o instanceof SurveyItem){
