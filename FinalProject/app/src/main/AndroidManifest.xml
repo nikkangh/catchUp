@@ -53,7 +53,7 @@
 
         <activity
             android:name=".MapsActivity"
-            android:label="AIzaSyCsAWuHQHQKGwS_u1BO29LuwwY7sevJ_bc" />
+            android:label="AIzaSyBTtMOPiMwtXKfj9M5ZwnyaeGL9sieNht8" />
         <activity android:name=".LoadingActivity"></activity>
     </application>
 
