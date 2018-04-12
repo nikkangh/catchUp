@@ -21,8 +21,11 @@ import android.widget.Toast;
 import com.appsee.Appsee;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -36,7 +39,7 @@ public class EmailActivity extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
     private FirebaseUser user;
     private FirebaseDatabase database;
-    private FriendsDBHandler DBHandler = new FriendsDBHandler();
+
 
     public ArrayList<String> list;
 
@@ -97,23 +100,76 @@ public class EmailActivity extends AppCompatActivity {
 
 
 
-    public void sendFriendRequest(String email){
+    public void sendFriendRequest(final String email){
 //comment this back in to test
-        
-       /* firebaseAuth = FirebaseAuth.getInstance();
+
+        firebaseAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
         user = firebaseAuth.getCurrentUser();
         ref = FirebaseDatabase.getInstance().getReference();
 
-        HashMap<String, ArrayList<String>> friends = new HashMap<String, ArrayList<String>>();
-        ArrayList<String> pending = new ArrayList<>();
-        ref = ref.child(user.getUid()).child("Friends");
-        pending.add(email);
-        friends.put("Pending", pending);
-        Log.d("Inserting MY friend", Collections.singletonList(friends).toString());
-        ref.setValue(friends);
+        ref = ref.child(user.getUid());
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    // dataSnapshot is the "issue" node with all children with id 0
+                           // Log.d("User UID", dataSnapshot.getValue().toString());
 
-        DBHandler.pendingFriends(email);*/
+
+                            if (dataSnapshot.child("Friends").exists()) {
+
+                                HashMap<String, ArrayList<String>> friends = (HashMap<String, ArrayList<String>>)dataSnapshot.child("Friends").getValue();
+                                //Log.d("Friend Exist", Collections.singletonList(friends).toString());
+
+                                ArrayList<String> pending;
+                                if (friends.get("Pending") == null) {
+                                    pending = new ArrayList<>();
+                                }
+                                else {
+                                    pending = friends.get("Pending");
+                                }
+                                pending.add(email);
+                                friends.put("Pending", pending); //works up until here
+
+                               // Log.d("Inserting new friends", Collections.singletonList(friends).toString());
+
+                                ref = ref.child("Friends");
+                                ref.setValue(friends);
+
+
+                            }
+                            else {
+
+                               // Log.d("New Friends", "You have none");
+                                HashMap<String, ArrayList<String>> friends = new HashMap<String, ArrayList<String>>();
+                                ArrayList<String> pending = new ArrayList<>();
+                                pending.add(email);
+                                friends.put("Pending", pending);
+                                ref = ref.child("Friends");
+                                ref.setValue(friends);
+                                //Log.d("Now You have", Collections.singletonList(friends).toString());
+                                //Log.d("User UID", dataSnapshot.getValue().toString());
+
+                            }
+
+
+
+                    }
+
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                System.out.println("The read failed: " + databaseError.getCode());
+            }
+        });
+
+        //dealing with the friend
+
+        FriendsDBHandler DBHandler = new FriendsDBHandler();
+        DBHandler.pendingFriends(email);
 
 
         Uri alarmSound = RingtoneManager.getActualDefaultRingtoneUri(this, RingtoneManager.TYPE_NOTIFICATION);
