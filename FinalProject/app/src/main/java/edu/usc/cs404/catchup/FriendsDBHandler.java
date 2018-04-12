@@ -38,6 +38,8 @@ public class FriendsDBHandler {
     }
 
 
+
+
     public void pendingFriends(String friendemail) {
         final String result = friendemail;
         //Log.d("entered", "made it inside");
@@ -56,7 +58,7 @@ public class FriendsDBHandler {
                     // dataSnapshot is the "issue" node with all children with id 0
                     for (DataSnapshot issue : dataSnapshot.getChildren()) {
 
-                        Log.d("User UID", issue.getValue().toString());
+                        //Log.d("User UID", issue.getValue().toString());
 
                         String uid = issue.child("uid").getValue().toString();
 
@@ -66,28 +68,36 @@ public class FriendsDBHandler {
                             HashMap<String, ArrayList<String>> friends = (HashMap<String, ArrayList<String>>)issue.child("Friends").getValue();
                             Log.d("Friend Exist", Collections.singletonList(friends).toString());
 
-                            ArrayList<String> pending = friends.get("Pending");
+                            ArrayList<String> pending;
+
+                            if (friends.get("Pending") == null) {
+                                pending = new ArrayList<>();
+                            }
+                            else {
+                                pending = friends.get("Pending");
+                            }
                             pending.add(user.getEmail());
                             friends.put("Pending", pending); //works up until here
 
-                            Log.d("Inserting new friends", Collections.singletonList(friends).toString());
+                           // Log.d("Inserting new friends", Collections.singletonList(friends).toString());
 
                             databaseReference = databaseReference.child(uid).child("Friends");
                             databaseReference.setValue(friends);
+
 
 
 
                         }
                         else {
 
-                            Log.d("New Friends", "You have none");
+                            //Log.d("New Friends", "You have none");
                             HashMap<String, ArrayList<String>> friends = new HashMap<String, ArrayList<String>>();
                             ArrayList<String> pending = new ArrayList<>();
                             pending.add(user.getEmail());
                             friends.put("Pending", pending);
                             databaseReference = databaseReference.child(uid).child("Friends");
                             databaseReference.setValue(friends);
-                            Log.d("Now You have", Collections.singletonList(friends).toString());
+                            //Log.d("Now You have", Collections.singletonList(friends).toString());
 
                         }
 
@@ -125,7 +135,7 @@ public class FriendsDBHandler {
                     // dataSnapshot is the "issue" node with all children with id 0
                     for (DataSnapshot issue : dataSnapshot.getChildren()) {
 
-                        Log.d("User UID", issue.getValue().toString());
+                        Log.d("FRIENDDBHANDLER User", issue.getValue().toString());
 
                         String uid = issue.child("uid").getValue().toString();
 
@@ -133,36 +143,29 @@ public class FriendsDBHandler {
                         if (issue.child("Friends").exists()) {
 
                             HashMap<String, ArrayList<String>> friends = (HashMap<String, ArrayList<String>>)issue.child("Friends").getValue();
-                            Log.d("Friend Exist", Collections.singletonList(friends).toString());
+                            Log.d("FRIENDDBHANDLER List", Collections.singletonList(friends).toString());
 
                             ArrayList<String> pending = friends.get("Pending");
-                            ArrayList<String> delete = friends.get("Delete");
+                            ArrayList<String> delete;
+                            if (friends.get("Delete") == null) {
+                                delete = new ArrayList<>();
+                            }
+                            else {
+                                delete = friends.get("Delete");
+                            }
+
                             pending.remove(user.getEmail());
                             delete.add(user.getEmail());
 
                             friends.put("Pending", pending); //works up until here
                             friends.put("Delete", delete);
 
-                            Log.d("Inserting new friends", Collections.singletonList(friends).toString());
+                            Log.d("Insert FRIENDDBHANDLER", Collections.singletonList(friends).toString());
 
                             databaseReference = databaseReference.child(uid).child("Friends");
                             databaseReference.setValue(friends);
 
 
-
-                        }
-                        else {
-
-                            Log.d("New Friends", "You have none");
-                            HashMap<String, ArrayList<String>> friends = new HashMap<String, ArrayList<String>>();
-                            ArrayList<String> pending = new ArrayList<>();
-                            ArrayList<String> delete = new ArrayList<>();
-                            pending.remove(user.getEmail());
-                            delete.add(user.getEmail());
-                            friends.put("Delete", delete);
-                            databaseReference = databaseReference.child(uid).child("Friends");
-                            databaseReference.setValue(friends);
-                            Log.d("Now You have", Collections.singletonList(friends).toString());
 
                         }
 
@@ -203,43 +206,37 @@ public class FriendsDBHandler {
                     // dataSnapshot is the "issue" node with all children with id 0
                     for (DataSnapshot issue : dataSnapshot.getChildren()) {
 
-                        Log.d("User UID", issue.getValue().toString());
+                        Log.d("FRIENDDBHANDLER User", issue.getValue().toString());
 
                         String uid = issue.child("uid").getValue().toString();
 
 
                         if (issue.child("Friends").exists()) {
 
-                            HashMap<String, ArrayList<String>> friends = (HashMap<String, ArrayList<String>>) issue.child("Friends").getValue();
-                            Log.d("Friend Exist", Collections.singletonList(friends).toString());
+                            HashMap<String, ArrayList<String>> friends = (HashMap<String, ArrayList<String>>)issue.child("Friends").getValue();
+                            Log.d("FRIENDDBHANDLER List", Collections.singletonList(friends).toString());
 
                             ArrayList<String> pending = friends.get("Pending");
-                            ArrayList<String> confirmed = friends.get("Delete");
+                            ArrayList<String> confirmed;
+                            if (friends.get("Confirm") == null) {
+                                confirmed = new ArrayList<>();
+                            }
+                            else {
+                                confirmed = friends.get("Confirm");
+                            }
+
                             pending.remove(user.getEmail());
                             confirmed.add(user.getEmail());
 
                             friends.put("Pending", pending); //works up until here
-                            friends.put("Confirmed", confirmed);
+                            friends.put("Confirm", confirmed);
 
-                            Log.d("Inserting new friends", Collections.singletonList(friends).toString());
-
-                            databaseReference = databaseReference.child(uid).child("Friends");
-                            databaseReference.setValue(friends);
-
-
-                        } else {
-
-                            Log.d("New Friends", "You have none");
-                            HashMap<String, ArrayList<String>> friends = new HashMap<String, ArrayList<String>>();
-                            ArrayList<String> pending = new ArrayList<>();
-                            ArrayList<String> confirmed = new ArrayList<>();
-                            pending.remove(user.getEmail());
-                            confirmed.add(user.getEmail());
-                            friends.put("Delete", confirmed);
+                            Log.d("Insert FRIENDDBHANDLER", Collections.singletonList(friends).toString());
 
                             databaseReference = databaseReference.child(uid).child("Friends");
                             databaseReference.setValue(friends);
-                            Log.d("Now You have", Collections.singletonList(friends).toString());
+
+
 
                         }
 
@@ -254,6 +251,8 @@ public class FriendsDBHandler {
             }
 
         });
+
+
     }
 
 
