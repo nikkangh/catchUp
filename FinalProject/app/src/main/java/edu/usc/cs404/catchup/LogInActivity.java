@@ -12,6 +12,8 @@ import android.widget.Toast;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
 
+import com.appsee.Appsee;
+
 
 public class LogInActivity extends AppCompatActivity {
     public static final String EXTRA_EMAIL = "edu.usc.cs404.catchup.email";
@@ -33,6 +35,9 @@ public class LogInActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        Appsee.setDebugToLogcat(true);
+        Appsee.start();
 
         Intent i = getIntent();
         String email = i.getStringExtra(EXTRA_EMAIL);
