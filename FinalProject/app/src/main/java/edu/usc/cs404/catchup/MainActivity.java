@@ -12,6 +12,8 @@ import android.os.Bundle;
 public class MainActivity extends AppCompatActivity {
     int selectedTab = 1;
 
+    static private TabLayout tabLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -19,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
 
         DataModel.getInstance().setContext(MainActivity.this);
 
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
+        tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         tabLayout.addTab(tabLayout.newTab().setText(R.string.map));
         tabLayout.addTab(tabLayout.newTab().setText(R.string.list));
         tabLayout.addTab(tabLayout.newTab().setText(R.string.settings));
@@ -38,10 +40,28 @@ public class MainActivity extends AppCompatActivity {
                 //viewPager.setCurrentItem(tab.getPosition());
                 selectedTab = tab.getPosition();
                 FragmentManager fm = getSupportFragmentManager();
-                Fragment f = new ListFragment();
-                FragmentTransaction ft = fm.beginTransaction();
-                ft.replace(R.id.fragment_container, f, "MY_FRAGMENT");
-                ft.commit();
+                Fragment f;
+                FragmentTransaction ft;
+                switch (selectedTab) {
+                    case 0:
+                        f = new MapFragment();
+                        ft = fm.beginTransaction();
+                        ft.replace(R.id.fragment_container, f, "MY_FRAGMENT");
+                        ft.commit();
+                        break;
+                    case 1:
+                        f = new ListFragment();
+                        ft = fm.beginTransaction();
+                        ft.replace(R.id.fragment_container, f, "MY_FRAGMENT");
+                        ft.commit();
+                        break;
+                    case 2:
+                        f = new ListFragment();
+                        ft = fm.beginTransaction();
+                        ft.replace(R.id.fragment_container, f, "MY_FRAGMENT");
+                        ft.commit();
+                        break;
+                }
             }
 
             @Override
@@ -54,11 +74,18 @@ public class MainActivity extends AppCompatActivity {
                 //viewPager.setCurrentItem(tab.getPosition());
             }
         });
-        tabLayout.getTabAt(2).select();
+        tabLayout.getTabAt(1).select();
     }
 
 
     static public void update() {
-        ListFragment.update();
+        switch (tabLayout.getSelectedTabPosition()) {
+            case 0:
+                MapFragment.update();
+                break;
+            case 1:
+                ListFragment.update();
+                break;
+        }
     }
 }

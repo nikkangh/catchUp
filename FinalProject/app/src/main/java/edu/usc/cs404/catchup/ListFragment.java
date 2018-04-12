@@ -24,7 +24,6 @@ import java.util.ArrayList;
  * create an instance of this fragment.
  */
 public class ListFragment extends Fragment {
-    //private OnFragmentInteractionListener mListener;
     private ListView list;
     static private ListAdapter adapter;
 
