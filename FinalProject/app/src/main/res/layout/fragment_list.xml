@@ -12,6 +12,7 @@
         android:textColor = "@color/colorWhite"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
+        android:layout_above="@id/pick"
         />
 
     <Button

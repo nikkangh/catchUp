@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -18,6 +19,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 
 /**
@@ -29,9 +31,9 @@ import java.util.ArrayList;
  * create an instance of this fragment.
  */
 public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener{
-    public static final String EXTRA_MARKERTAG = "edu.usc.cs404.catchup.markertag";
 
     private GoogleMap mMap;
+    private Button pick;
     private ArrayList<LocationObject> markerPoints;
 
     public MapFragment() {
@@ -69,6 +71,22 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
         SupportMapFragment mapFragment = (SupportMapFragment) this.getChildFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        pick = (Button) v.findViewById(R.id.pick);
+        pick.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Random rand = new Random();
+
+                // nextInt is normally exclusive of the top value,
+                // so add 1 to make it inclusive
+                int randomNum = rand.nextInt(DataModel.getInstance().getDataCount());
+
+                Intent i = new Intent(getContext(), DetailsActivity.class);
+                i.putExtra(ListFragment.EXTRA_INDEX, randomNum);
+                startActivity(i);
+            }
+        });
 
         //Intent intent = getIntent();
         return v;
@@ -114,11 +132,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
 
     @Override
     public void onInfoWindowClick(Marker marker) {
-        //System.out.println("Infowindow being clicked");
         Intent i = new Intent(getContext(), DetailsActivity.class);
-
-        i.putExtra(EXTRA_MARKERTAG, (int)(marker.getTag()));
-        //TODO: Add functionality to go to Activity page
+        i.putExtra(ListFragment.EXTRA_INDEX, (int)(marker.getTag()));
         startActivity(i);
     }
 

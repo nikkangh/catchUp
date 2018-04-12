@@ -1,12 +1,14 @@
 package edu.usc.cs404.catchup;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -25,6 +27,8 @@ import java.util.Random;
  * create an instance of this fragment.
  */
 public class ListFragment extends Fragment {
+    public static final String EXTRA_INDEX = "edu.usc.cs404.catchup.index";
+
     private ListView list;
     private Button pick;
 
@@ -71,16 +75,25 @@ public class ListFragment extends Fragment {
 
                 // nextInt is normally exclusive of the top value,
                 // so add 1 to make it inclusive
-                int randomNum = rand.nextInt(20);
+                int randomNum = rand.nextInt(DataModel.getInstance().getDataCount());
 
-                Toast.makeText(getContext(),
-                        DataModel.getInstance().getLocationObjectAtIndex((randomNum)).getRestaurantName(), Toast.LENGTH_LONG).show();
+                Intent i = new Intent(getContext(), DetailsActivity.class);
+                i.putExtra(EXTRA_INDEX, randomNum);
+                startActivity(i);
             }
         });
 
         list = (ListView) v.findViewById(R.id.list);
         adapter = new ListAdapter(getContext(), R.id.list_countries, new ArrayList<LocationObject>());
         list.setAdapter(adapter);
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent i = new Intent(getContext(), DetailsActivity.class);
+                i.putExtra(EXTRA_INDEX, position);
+                startActivity(i);
+            }
+        });
 
         return v;
     }
