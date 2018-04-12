@@ -5,11 +5,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import com.squareup.picasso.Picasso;
+
 
 public class ListAdapter extends ArrayAdapter {
+    private ImageView image;
     private TextView restaurantName;
     private TextView category;
     private TextView rating;
@@ -33,6 +37,10 @@ public class ListAdapter extends ArrayAdapter {
         }
 
         LocationObject loc = DataModel.getInstance().getLocationObjectAtIndex(position);
+
+        image = (ImageView) convertView.findViewById(R.id.image);
+        Picasso.with(getContext()).load(loc.getImageUrl()).fit().centerCrop().into(image);
+
 
         restaurantName = (TextView) convertView.findViewById(R.id.name);
         restaurantName.setText(loc.getRestaurantName());
