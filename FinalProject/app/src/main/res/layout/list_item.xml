@@ -17,7 +17,6 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
         android:layout_alignBottom="@+id/numReviews"
-        android:background="@color/colorBackground"
         />
 
     <TextView

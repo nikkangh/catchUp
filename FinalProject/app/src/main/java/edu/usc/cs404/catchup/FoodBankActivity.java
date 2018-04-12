@@ -338,55 +338,6 @@ public class FoodBankActivity extends AppCompatActivity {
         queue.add(stringRequest);
     }*/
 
-    class ListAdapter extends ArrayAdapter {
-        private TextView restaurantName;
-        private TextView category;
-        private TextView rating;
-        private TextView reviews;
-        private TextView distance;
-        private TextView price;
-
-        public ListAdapter(Context c, int resId, ArrayList<LocationObject> _content) {
-            super(c, resId, _content); // Use a custom layout file
-        }
-
-        public int getCount() {
-
-            return DataModel.getInstance().getDataCount();
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            if(convertView == null){
-                convertView = getLayoutInflater().inflate(R.layout.list_item,null);
-            }
-
-            LocationObject loc = DataModel.getInstance().getLocationObjectAtIndex(position);
-
-            restaurantName = (TextView) convertView.findViewById(R.id.name);
-            restaurantName.setText(loc.getRestaurantName());
-
-            category = (TextView) convertView.findViewById(R.id.category);
-            category.setText(loc.getCategoryString());
-
-            rating = (TextView) convertView.findViewById(R.id.rating);
-            rating.setText(loc.getRatingString());
-
-            reviews = (TextView) convertView.findViewById(R.id.numReviews);
-            reviews.setText(String.format(getString(R.string.num_reviews), loc.getReviewCount()));
-
-            distance = (TextView) convertView.findViewById(R.id.distance);
-            distance.setText(String.format(getString(R.string.num_distance), loc.getDistance()));
-
-            price = (TextView) convertView.findViewById(R.id.price);
-            price.setText(loc.getPrice());
-
-            textViewResultsHeader.setText(String.format(getString(R.string.search_results_header), DataModel.getInstance().getDataCount()));
-            return convertView;
-        }
-    }
-
-
     static public void update() {
         adapter.notifyDataSetChanged();
     }

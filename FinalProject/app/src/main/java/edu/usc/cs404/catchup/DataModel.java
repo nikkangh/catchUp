@@ -267,7 +267,7 @@ public class DataModel implements Serializable {
         finalList.addAll(removeDuplicates);
         finalList.sort(new LocComparator());
 
-        FoodBankActivity.update();
+        MainActivity.update();
     }
 
 

@@ -19,6 +19,8 @@
     <string name="num_reviews">%1$d reviews</string>
     <string name="num_distance">%1$.2f mi</string>
     <string name="other">Other...</string>
+    <string name="map">Map View</string>
+    <string name="list">List View</string>
 
     <string-array name="cuisineList">
         <item>American</item>
