@@ -10,22 +10,21 @@
     <ImageView
         android:id="@+id/logoImg"
         android:layout_width="match_parent"
-        android:layout_height="319dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
+        android:layout_above="@id/logoTxt"
+        android:paddingTop="114dp"
         android:layout_gravity="center"
-        android:layout_marginTop="104dp"
-        android:paddingBottom="64dp"
-        android:paddingTop="64dp"
         android:src="@drawable/tomato" />
 
     <TextView
         android:id="@+id/logoTxt"
         android:layout_width="match_parent"
-        android:layout_height="115dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
-        android:layout_marginBottom="184dp"
+        android:layout_marginBottom="114dp"
         android:fontFamily="cursive"
         android:gravity="center"
         android:shadowColor="@color/colorDarkBackground"
