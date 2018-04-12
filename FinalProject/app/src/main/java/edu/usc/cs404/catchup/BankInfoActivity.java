@@ -26,11 +26,11 @@ public class BankInfoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        profile = (Button)findViewById(R.id.profileButton);
+        /*profile = (Button)findViewById(R.id.profileButton);
         rating = (Button)findViewById(R.id.rateButton);
         volunteer = (Button)findViewById(R.id.volunteerButton);
 
-
+*/
 
         Intent i = getIntent();
         String reference = i.getStringExtra(EXTRA_URL);

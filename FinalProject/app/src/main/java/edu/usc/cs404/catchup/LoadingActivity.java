@@ -54,7 +54,7 @@ public class LoadingActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             //If user cuisine preference from data base is empty, then go to SURVEY:
                             //Intent i = new Intent(getApplicationContext(), SurveyActivity.class);
-                            Intent i = new Intent(getApplicationContext(), FoodBankActivity.class);
+                            Intent i = new Intent(getApplicationContext(), MainActivity.class);
                             startActivity(i);
 
                             //ELSE go to SEARCH

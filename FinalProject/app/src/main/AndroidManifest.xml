@@ -55,6 +55,7 @@
             android:name=".MapsActivity"
             android:label="AIzaSyBTtMOPiMwtXKfj9M5ZwnyaeGL9sieNht8" />
         <activity android:name=".LoadingActivity"></activity>
+        <activity android:name=".MainActivity"></activity>
     </application>
 
 </manifest>

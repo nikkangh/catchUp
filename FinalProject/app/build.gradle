@@ -27,6 +27,7 @@ dependencies {
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
     implementation 'com.google.android.gms:play-services-maps:9.8.0'
     implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation 'com.android.support:support-v4:26.1.0'
     androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
@@ -44,5 +45,10 @@ dependencies {
     implementation('com.appyvet:materialrangebar:1.4.1') {
         exclude module: 'support-compat'
     }
+
+    compile 'com.android.support:appcompat-v7:22.2.0'
+    compile 'com.android.support:design:22.2.0'
 }
 apply plugin: 'com.google.gms.google-services'
+
+
