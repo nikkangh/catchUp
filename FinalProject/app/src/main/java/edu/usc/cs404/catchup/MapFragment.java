@@ -120,7 +120,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
         i.putExtra(EXTRA_MARKERTAG, (int)(marker.getTag()));
         //TODO: Add functionality to go to Activity page
         startActivity(i);
-
     }
 
     static public void update() {

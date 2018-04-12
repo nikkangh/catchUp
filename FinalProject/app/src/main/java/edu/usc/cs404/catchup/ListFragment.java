@@ -7,12 +7,13 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import java.util.ArrayList;
-
-
+import java.util.Random;
 
 
 /**
@@ -25,6 +26,8 @@ import java.util.ArrayList;
  */
 public class ListFragment extends Fragment {
     private ListView list;
+    private Button pick;
+
     static private ListAdapter adapter;
 
     public ListFragment() {
@@ -59,6 +62,21 @@ public class ListFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_list, container, false);
+
+        pick = (Button) v.findViewById(R.id.pick);
+        pick.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Random rand = new Random();
+
+                // nextInt is normally exclusive of the top value,
+                // so add 1 to make it inclusive
+                int randomNum = rand.nextInt(20);
+
+                Toast.makeText(getContext(),
+                        DataModel.getInstance().getLocationObjectAtIndex((randomNum)).getRestaurantName(), Toast.LENGTH_LONG).show();
+            }
+        });
 
         list = (ListView) v.findViewById(R.id.list);
         adapter = new ListAdapter(getContext(), R.id.list_countries, new ArrayList<LocationObject>());
