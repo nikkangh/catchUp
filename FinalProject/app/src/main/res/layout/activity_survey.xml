@@ -4,7 +4,7 @@
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorBackground"
+    android:background="@color/colorWhite"
     tools:context="edu.usc.cs404.catchup.SurveyActivity">
 
     <TextView
@@ -14,7 +14,7 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:gravity="center"
-        android:textColor="@color/colorAccent"
+        android:background="@color/colorAccent"
         android:textSize="25dp"
         android:text="Choose your preferences"
         android:padding="16dp"/>

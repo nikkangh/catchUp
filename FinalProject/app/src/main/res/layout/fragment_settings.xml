@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SettingsFragment">
+
+    <Button
+        android:id="@+id/buttonSurvey"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_alignParentTop="true"
+        android:fontFamily="sans-serif"
+        android:text="@string/updatePref"
+        android:textColor="@color/colorAccent"
+        android:layout_marginTop="16dp"/>
+
+    <Button
+        android:id="@+id/buttonInvite"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_below="@+id/buttonSurvey"
+        android:fontFamily="sans-serif"
+        android:text="@string/inviteFriends"
+        android:textColor="@color/colorAccent"/>
+</RelativeLayout>

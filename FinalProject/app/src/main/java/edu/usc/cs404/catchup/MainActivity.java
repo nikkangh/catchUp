@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.addTab(tabLayout.newTab().setText(R.string.list));
         tabLayout.addTab(tabLayout.newTab().setText(R.string.settings));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-        tabLayout.setSelectedTabIndicatorColor(R.color.colorWhite);
+        tabLayout.setSelectedTabIndicatorColor(getColor(R.color.colorWhite));
 
 
         //final ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
                         ft.commit();
                         break;
                     case 2:
-                        f = new ListFragment();
+                        f = new SettingsFragment();
                         ft = fm.beginTransaction();
                         ft.replace(R.id.fragment_container, f, "MY_FRAGMENT");
                         ft.commit();
@@ -85,6 +85,9 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case 1:
                 ListFragment.update();
+                break;
+            case 2:
+                //SettingsFragment.update();
                 break;
         }
     }

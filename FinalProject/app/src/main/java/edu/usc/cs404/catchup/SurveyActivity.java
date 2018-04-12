@@ -137,8 +137,9 @@ public class SurveyActivity extends Activity {
 
                 databaseReference.setValue(items); //set surveyresults
 
-                Intent i = new Intent(getApplicationContext(), FoodBankActivity.class);
-                startActivity(i);
+                //Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                //startActivity(i);
+                finish();
             }
         });
 
