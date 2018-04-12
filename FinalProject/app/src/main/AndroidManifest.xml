@@ -56,6 +56,8 @@
             android:label="AIzaSyBTtMOPiMwtXKfj9M5ZwnyaeGL9sieNht8" />
         <activity android:name=".LoadingActivity"></activity>
         <activity android:name=".MainActivity"></activity>
+
+        <meta-data android:name="com.appsee.ApiKey" android:value="358887ca90bb44f7aa8c2d927a0d4c52" />
     </application>
 
 </manifest>

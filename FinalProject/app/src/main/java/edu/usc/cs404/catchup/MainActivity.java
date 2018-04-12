@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 public class MainActivity extends AppCompatActivity {
+    int selectedTab = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,10 +20,12 @@ public class MainActivity extends AppCompatActivity {
         DataModel.getInstance().setContext(MainActivity.this);
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
-        tabLayout.addTab(tabLayout.newTab().setText("Tab 1"));
-        tabLayout.addTab(tabLayout.newTab().setText("Tab 2"));
-        tabLayout.addTab(tabLayout.newTab().setText("Tab 3"));
+        tabLayout.addTab(tabLayout.newTab().setText(R.string.map));
+        tabLayout.addTab(tabLayout.newTab().setText(R.string.list));
+        tabLayout.addTab(tabLayout.newTab().setText(R.string.settings));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+        tabLayout.setSelectedTabIndicatorColor(R.color.colorWhite);
+
 
         //final ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
         //final PagerAdapter adapter = new PageAdapter
@@ -33,10 +36,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 //viewPager.setCurrentItem(tab.getPosition());
+                selectedTab = tab.getPosition();
                 FragmentManager fm = getSupportFragmentManager();
                 Fragment f = new ListFragment();
                 FragmentTransaction ft = fm.beginTransaction();
-                ft.replace(R.id.fragment_container, f);
+                ft.replace(R.id.fragment_container, f, "MY_FRAGMENT");
                 ft.commit();
             }
 
@@ -50,5 +54,11 @@ public class MainActivity extends AppCompatActivity {
                 //viewPager.setCurrentItem(tab.getPosition());
             }
         });
+        tabLayout.getTabAt(2).select();
+    }
+
+
+    static public void update() {
+        ListFragment.update();
     }
 }

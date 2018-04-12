@@ -338,9 +338,6 @@ public class FoodBankActivity extends AppCompatActivity {
         queue.add(stringRequest);
     }*/
 
-
-
-
     static public void update() {
         adapter.notifyDataSetChanged();
     }

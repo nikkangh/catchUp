@@ -45,9 +45,9 @@ dependencies {
     implementation('com.appyvet:materialrangebar:1.4.1') {
         exclude module: 'support-compat'
     }
-
     compile 'com.android.support:appcompat-v7:22.2.0'
     compile 'com.android.support:design:22.2.0'
+    compile 'com.appsee:appsee-android:+'
 }
 apply plugin: 'com.google.gms.google-services'
 

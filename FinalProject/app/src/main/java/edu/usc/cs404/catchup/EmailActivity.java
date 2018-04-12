@@ -1,43 +1,42 @@
 package edu.usc.cs404.catchup;
 
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Color;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.NotificationCompat;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
-import android.content.Intent;
-import android.net.Uri;
-import android.util.Log;
-import android.app.NotificationManager;
-import android.app.Notification;
-import android.app.NotificationChannel;
-import android.content.Context;
-import android.graphics.Color;
-import android.app.PendingIntent;
-import android.support.v4.app.NotificationCompat;
-import android.media.RingtoneManager;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+import com.appsee.Appsee;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.ProviderQueryResult;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 
 public class EmailActivity extends AppCompatActivity {
 
     private static final String uniqueID = "404404";
     private ArrayList<String> friendsList;
-    private DatabaseReference databaseReference;
+    private DatabaseReference ref;
     private FirebaseAuth firebaseAuth;
+    private FirebaseUser user;
+    private FirebaseDatabase database;
+    private FriendsDBHandler DBHandler = new FriendsDBHandler();
 
     public ArrayList<String> list;
 
@@ -47,16 +46,8 @@ public class EmailActivity extends AppCompatActivity {
 
         //generate list
         list = new ArrayList<String>();
-//        list.add("item1");
-//        list.add("item2");
-//
-//        //instantiate custom adapter
-//        MyCustomAdapter adapter = new MyCustomAdapter(list, this);
-//
-//        //handle listview and assign adapter
-//        ListView lView = (ListView)findViewById(R.id.notificationView);
-//        lView.setAdapter(adapter);
-
+        Appsee.setDebugToLogcat(true);
+        Appsee.start();
     }
 
 
@@ -107,6 +98,23 @@ public class EmailActivity extends AppCompatActivity {
 
 
     public void sendFriendRequest(String email){
+//comment this back in to test
+        
+       /* firebaseAuth = FirebaseAuth.getInstance();
+        database = FirebaseDatabase.getInstance();
+        user = firebaseAuth.getCurrentUser();
+        ref = FirebaseDatabase.getInstance().getReference();
+
+        HashMap<String, ArrayList<String>> friends = new HashMap<String, ArrayList<String>>();
+        ArrayList<String> pending = new ArrayList<>();
+        ref = ref.child(user.getUid()).child("Friends");
+        pending.add(email);
+        friends.put("Pending", pending);
+        Log.d("Inserting MY friend", Collections.singletonList(friends).toString());
+        ref.setValue(friends);
+
+        DBHandler.pendingFriends(email);*/
+
 
         Uri alarmSound = RingtoneManager.getActualDefaultRingtoneUri(this, RingtoneManager.TYPE_NOTIFICATION);
 
@@ -164,7 +172,7 @@ public class EmailActivity extends AppCompatActivity {
         try {
             startActivity(Intent.createChooser(emailIntent, "Send mail..."));
             finish();
-            Log.i("Finished sending email...", "");
+            Log.i("Finished sending email", "");
         } catch (android.content.ActivityNotFoundException ex) {
             Toast.makeText(EmailActivity.this,
                     "There is no email client installed.", Toast.LENGTH_SHORT).show();

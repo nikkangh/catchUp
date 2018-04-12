@@ -3,12 +3,18 @@ package edu.usc.cs404.catchup;
 import android.util.Log;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+
 
 /**
  * Created by eshitamathur on 4/9/18.
@@ -17,150 +23,240 @@ import com.google.firebase.database.ValueEventListener;
 public class FriendsDBHandler {
     private DatabaseReference databaseReference;
     private FirebaseAuth firebaseAuth;
+    private FirebaseUser user;
+    FirebaseDatabase database;
 
-    public FriendsDBHandler() {}
+
+
+
+    public FriendsDBHandler() {
+        firebaseAuth = FirebaseAuth.getInstance();
+        database = FirebaseDatabase.getInstance();
+        user = firebaseAuth.getCurrentUser();
+        databaseReference = FirebaseDatabase.getInstance().getReference();
+
+    }
 
 
     public void pendingFriends(String friendemail) {
         final String result = friendemail;
-        ValueEventListener userListener = new ValueEventListener() { //get latest info from database
+        //Log.d("entered", "made it inside");
+        // Log.d("User Email", user.getEmail());
+        // Log.d("User UID", user.getUid());
+
+
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+
+        Query query = reference.orderByChild("username").equalTo(friendemail);
+
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) { //get the current database snap (hehe like snapchat SO COOL)
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    // dataSnapshot is the "issue" node with all children with id 0
+                    for (DataSnapshot issue : dataSnapshot.getChildren()) {
 
-                firebaseAuth = FirebaseAuth.getInstance(); //get instance of authentication
-                DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+                        Log.d("User UID", issue.getValue().toString());
 
-                Query query = reference.orderByChild("username").equalTo(result);
-                query.addValueEventListener(new ValueEventListener() {
-
-
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        if (dataSnapshot.exists()) {
-                            for (DataSnapshot people : dataSnapshot.getChildren()) {
-                                User user2 = dataSnapshot.getValue(User.class);
-                                User me = dataSnapshot.child(firebaseAuth.getCurrentUser().getUid()).getValue(User.class);
-                                me.createPendingFriend(result); // I add friend
-                                user2.createPendingFriend(me.getUsername()); //friend adds me
-
-                                databaseReference.setValue(me);
-                                databaseReference.setValue(user2);
+                        String uid = issue.child("uid").getValue().toString();
 
 
-                            }
+                        if (issue.child("Friends").exists()) {
+
+                            HashMap<String, ArrayList<String>> friends = (HashMap<String, ArrayList<String>>)issue.child("Friends").getValue();
+                            Log.d("Friend Exist", Collections.singletonList(friends).toString());
+
+                            ArrayList<String> pending = friends.get("Pending");
+                            pending.add(user.getEmail());
+                            friends.put("Pending", pending); //works up until here
+
+                            Log.d("Inserting new friends", Collections.singletonList(friends).toString());
+
+                            databaseReference = databaseReference.child(uid).child("Friends");
+                            databaseReference.setValue(friends);
+
+
+
                         }
-                    }
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
+                        else {
+
+                            Log.d("New Friends", "You have none");
+                            HashMap<String, ArrayList<String>> friends = new HashMap<String, ArrayList<String>>();
+                            ArrayList<String> pending = new ArrayList<>();
+                            pending.add(user.getEmail());
+                            friends.put("Pending", pending);
+                            databaseReference = databaseReference.child(uid).child("Friends");
+                            databaseReference.setValue(friends);
+                            Log.d("Now You have", Collections.singletonList(friends).toString());
+
+                        }
+
 
                     }
-                });
+                }
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                Log.w("hi", "loadPost:onCancelled", databaseError.toException());
+
             }
-        };
-        databaseReference.addValueEventListener(userListener);
 
-
+        });
 
     }
 
-    public void deletePendingFriends(String friendemail) {
 
+
+    public void deletePendingFriends(final String friendemail) {
         final String result = friendemail;
-        ValueEventListener userListener = new ValueEventListener() { //get latest info from database
+        //Log.d("entered", "made it inside");
+        // Log.d("User Email", user.getEmail());
+        // Log.d("User UID", user.getUid());
+
+
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+
+        Query query = reference.orderByChild("username").equalTo(friendemail);
+
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) { //get the current database snap (hehe like snapchat SO COOL)
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    // dataSnapshot is the "issue" node with all children with id 0
+                    for (DataSnapshot issue : dataSnapshot.getChildren()) {
 
-                firebaseAuth = FirebaseAuth.getInstance(); //get instance of authentication
-                DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+                        Log.d("User UID", issue.getValue().toString());
 
-                Query query = reference.orderByChild("username").equalTo(result);
-                query.addValueEventListener(new ValueEventListener() {
-
-
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        if (dataSnapshot.exists()) {
-                            for (DataSnapshot people : dataSnapshot.getChildren()) {
-                                User user2 = dataSnapshot.getValue(User.class);
-                                User me = dataSnapshot.child(firebaseAuth.getCurrentUser().getUid()).getValue(User.class);
-                                me.deletePendingFriend(result); // I add friend
-                                user2.deletePendingFriend(me.getUsername()); //friend adds me
-
-                                databaseReference.setValue(me);
-                                databaseReference.setValue(user2);
+                        String uid = issue.child("uid").getValue().toString();
 
 
-                            }
+                        if (issue.child("Friends").exists()) {
+
+                            HashMap<String, ArrayList<String>> friends = (HashMap<String, ArrayList<String>>)issue.child("Friends").getValue();
+                            Log.d("Friend Exist", Collections.singletonList(friends).toString());
+
+                            ArrayList<String> pending = friends.get("Pending");
+                            ArrayList<String> delete = friends.get("Delete");
+                            pending.remove(user.getEmail());
+                            delete.add(user.getEmail());
+
+                            friends.put("Pending", pending); //works up until here
+                            friends.put("Delete", delete);
+
+                            Log.d("Inserting new friends", Collections.singletonList(friends).toString());
+
+                            databaseReference = databaseReference.child(uid).child("Friends");
+                            databaseReference.setValue(friends);
+
+
+
                         }
-                    }
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
+                        else {
+
+                            Log.d("New Friends", "You have none");
+                            HashMap<String, ArrayList<String>> friends = new HashMap<String, ArrayList<String>>();
+                            ArrayList<String> pending = new ArrayList<>();
+                            ArrayList<String> delete = new ArrayList<>();
+                            pending.remove(user.getEmail());
+                            delete.add(user.getEmail());
+                            friends.put("Delete", delete);
+                            databaseReference = databaseReference.child(uid).child("Friends");
+                            databaseReference.setValue(friends);
+                            Log.d("Now You have", Collections.singletonList(friends).toString());
+
+                        }
+
 
                     }
-                });
+                }
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                Log.w("hi", "loadPost:onCancelled", databaseError.toException());
+
             }
-        };
-        databaseReference.addValueEventListener(userListener);
+
+        });
+
 
     }
+
+
+
 
     public void confirmFriends(String friendemail) {
 
         final String result = friendemail;
-        ValueEventListener userListener = new ValueEventListener() { //get latest info from database
+        //Log.d("entered", "made it inside");
+        // Log.d("User Email", user.getEmail());
+        // Log.d("User UID", user.getUid());
+
+
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+
+        Query query = reference.orderByChild("username").equalTo(friendemail);
+
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) { //get the current database snap (hehe like snapchat SO COOL)
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    // dataSnapshot is the "issue" node with all children with id 0
+                    for (DataSnapshot issue : dataSnapshot.getChildren()) {
 
-                firebaseAuth = FirebaseAuth.getInstance(); //get instance of authentication
-                DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+                        Log.d("User UID", issue.getValue().toString());
 
-                Query query = reference.orderByChild("username").equalTo(result);
-                query.addValueEventListener(new ValueEventListener() {
-
-
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        if (dataSnapshot.exists()) {
-                            for (DataSnapshot people : dataSnapshot.getChildren()) {
-                                User user2 = dataSnapshot.getValue(User.class);
-                                User me = dataSnapshot.child(firebaseAuth.getCurrentUser().getUid()).getValue(User.class);
-                                me.confirmedFriend(result); // I add friend
-                                user2.confirmedFriend(me.getUsername()); //friend adds me
-
-                                databaseReference.setValue(me);
-                                databaseReference.setValue(user2);
+                        String uid = issue.child("uid").getValue().toString();
 
 
-                            }
+                        if (issue.child("Friends").exists()) {
+
+                            HashMap<String, ArrayList<String>> friends = (HashMap<String, ArrayList<String>>) issue.child("Friends").getValue();
+                            Log.d("Friend Exist", Collections.singletonList(friends).toString());
+
+                            ArrayList<String> pending = friends.get("Pending");
+                            ArrayList<String> confirmed = friends.get("Delete");
+                            pending.remove(user.getEmail());
+                            confirmed.add(user.getEmail());
+
+                            friends.put("Pending", pending); //works up until here
+                            friends.put("Confirmed", confirmed);
+
+                            Log.d("Inserting new friends", Collections.singletonList(friends).toString());
+
+                            databaseReference = databaseReference.child(uid).child("Friends");
+                            databaseReference.setValue(friends);
+
+
+                        } else {
+
+                            Log.d("New Friends", "You have none");
+                            HashMap<String, ArrayList<String>> friends = new HashMap<String, ArrayList<String>>();
+                            ArrayList<String> pending = new ArrayList<>();
+                            ArrayList<String> confirmed = new ArrayList<>();
+                            pending.remove(user.getEmail());
+                            confirmed.add(user.getEmail());
+                            friends.put("Delete", confirmed);
+
+                            databaseReference = databaseReference.child(uid).child("Friends");
+                            databaseReference.setValue(friends);
+                            Log.d("Now You have", Collections.singletonList(friends).toString());
+
                         }
-                    }
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
+
 
                     }
-                });
+                }
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                Log.w("hi", "loadPost:onCancelled", databaseError.toException());
-            }
-        };
-        databaseReference.addValueEventListener(userListener);
 
+            }
+
+        });
     }
 
 
-
 }
+
 

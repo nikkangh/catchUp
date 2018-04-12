@@ -24,7 +24,7 @@ import java.util.ArrayList;
 public class ListFragment extends Fragment {
     //private OnFragmentInteractionListener mListener;
     private ListView list;
-    private ListAdapter adapter;
+    static private ListAdapter adapter;
 
     public ListFragment() {
         // Required empty public constructor
@@ -104,4 +104,10 @@ public class ListFragment extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }*/
+
+    static public void update() {
+        if (adapter != null) {
+            adapter.notifyDataSetChanged();
+        }
+    }
 }
