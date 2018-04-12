@@ -1,7 +1,9 @@
 package edu.usc.cs404.catchup;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -64,17 +66,29 @@ public class DataModel implements Serializable {
         databaseReference = FirebaseDatabase.getInstance().getReference(); //get instance of database
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser(); //get your information
         databaseReference = databaseReference.child(firebaseUser.getUid()).child("surveyItems");
+        if (databaseReference == null) {
+            redirect();
+        }
+
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                boolean atLeastOneTrue = false;
                 for (DataSnapshot itemSnapshot: dataSnapshot.getChildren()) {
                     SurveyItem item = itemSnapshot.getValue(SurveyItem.class);
+                    if (item.isSelected) {
+                        atLeastOneTrue = true;
+                    }
                     if (!currItems.contains(item)) {
                         newItems.add(item);
                     }
                 }
                 if (!newItems.isEmpty()) {
                     reloadData();
+                }
+
+                if (!atLeastOneTrue) {
+                    redirect();
                 }
             }
 
@@ -291,4 +305,8 @@ public class DataModel implements Serializable {
         return finalList.get(index);
     }
 
+    private void redirect() {
+        Intent i = new Intent(context, SurveyActivity.class);
+        context.startActivity(i);
+    }
 }

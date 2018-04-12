@@ -10,6 +10,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -29,6 +30,8 @@ import com.google.firebase.database.ValueEventListener;
 public class SurveyActivity extends Activity {
     /*public static final String PREFERENCE_FILENAME = "edu.usc.cs404.catchup.pref_file";
     public static final String PREFERENCE_FOODPREFS = "edu.usc.cs404.catchup.pref_food";*/
+    boolean inStartUpFlow = false;
+
     private EditText editText;
     private ListView listView;
     private Button saveButton;
@@ -45,11 +48,14 @@ public class SurveyActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_survey);
 
+        Intent i = getIntent();
+        inStartUpFlow = i.getBooleanExtra(LogInActivity.EXTRA_NEWACCOUNT, false);
         /*
         SharedPreferences prefs = getSharedPreferences(
                 SurveyActivity.PREFERENCE_FILENAME, MODE_PRIVATE);
         Set<String> s = prefs.getStringSet(
                 SurveyActivity.PREFERENCE_FOODPREFS, new HashSet<String>());*/
+
 
         listView = (ListView) findViewById(R.id.listview);
         adapter = new SurveyAdapter(this, items);
@@ -126,20 +132,39 @@ public class SurveyActivity extends Activity {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                boolean atLeastOneTrue = false;
+
                 List<String> newItems = Arrays.asList(editText.getText().toString().split(","));
                 for (int i = 0; i < newItems.size(); i++) {
                     String newItem = newItems.get(i).trim();
                     if (!newItem.isEmpty()) {
                         items.add(new SurveyItem(true, newItem));
+                        atLeastOneTrue = true;
                     }
                 }
                 editText.setText("");
 
-                databaseReference.setValue(items); //set surveyresults
+                if (!atLeastOneTrue) {
+                    for (SurveyItem item: items) {
+                        if (item.isSelected) {
+                            atLeastOneTrue = true;
+                        }
+                    }
+                }
 
-                //Intent i = new Intent(getApplicationContext(), MainActivity.class);
-                //startActivity(i);
-                finish();
+                if (atLeastOneTrue) {
+                    databaseReference.setValue(items); //set surveyresults
+
+                    if (inStartUpFlow) {
+                        Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                        startActivity(i);
+                    } else {
+                        finish();
+                    }
+                } else {
+                    Toast.makeText(SurveyActivity.this,
+                            "Please select at least one option.", Toast.LENGTH_LONG).show();
+                }
             }
         });
 
