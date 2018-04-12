@@ -20,16 +20,23 @@ import android.widget.Toast;
 
 import com.appsee.Appsee;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 
 public class EmailActivity extends AppCompatActivity {
 
     private static final String uniqueID = "404404";
     private ArrayList<String> friendsList;
-    private DatabaseReference databaseReference;
+    private DatabaseReference ref;
     private FirebaseAuth firebaseAuth;
+    private FirebaseUser user;
+    private FirebaseDatabase database;
+    private FriendsDBHandler DBHandler = new FriendsDBHandler();
 
     public ArrayList<String> list;
 
@@ -39,15 +46,6 @@ public class EmailActivity extends AppCompatActivity {
 
         //generate list
         list = new ArrayList<String>();
-//        list.add("item1");
-//        list.add("item2");
-//
-//        //instantiate custom adapter
-//        MyCustomAdapter adapter = new MyCustomAdapter(list, this);
-//
-//        //handle listview and assign adapter
-//        ListView lView = (ListView)findViewById(R.id.notificationView);
-//        lView.setAdapter(adapter);
         Appsee.setDebugToLogcat(true);
         Appsee.start();
     }
@@ -100,6 +98,23 @@ public class EmailActivity extends AppCompatActivity {
 
 
     public void sendFriendRequest(String email){
+//comment this back in to test
+        
+       /* firebaseAuth = FirebaseAuth.getInstance();
+        database = FirebaseDatabase.getInstance();
+        user = firebaseAuth.getCurrentUser();
+        ref = FirebaseDatabase.getInstance().getReference();
+
+        HashMap<String, ArrayList<String>> friends = new HashMap<String, ArrayList<String>>();
+        ArrayList<String> pending = new ArrayList<>();
+        ref = ref.child(user.getUid()).child("Friends");
+        pending.add(email);
+        friends.put("Pending", pending);
+        Log.d("Inserting MY friend", Collections.singletonList(friends).toString());
+        ref.setValue(friends);
+
+        DBHandler.pendingFriends(email);*/
+
 
         Uri alarmSound = RingtoneManager.getActualDefaultRingtoneUri(this, RingtoneManager.TYPE_NOTIFICATION);
 
@@ -157,7 +172,7 @@ public class EmailActivity extends AppCompatActivity {
         try {
             startActivity(Intent.createChooser(emailIntent, "Send mail..."));
             finish();
-            Log.i("Finished sending email...", "");
+            Log.i("Finished sending email", "");
         } catch (android.content.ActivityNotFoundException ex) {
             Toast.makeText(EmailActivity.this,
                     "There is no email client installed.", Toast.LENGTH_SHORT).show();
