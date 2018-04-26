@@ -5,34 +5,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".LoadingActivity"
-    android:background="@color/colorBackground">
-
-    <ImageView
-        android:id="@+id/logoImg"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_above="@id/logoTxt"
-        android:paddingTop="114dp"
-        android:layout_gravity="center"
-        android:src="@drawable/tomato" />
+    android:background="@color/colorWhite"
+    android:gravity="center">
 
     <TextView
         android:id="@+id/logoTxt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="114dp"
-        android:fontFamily="cursive"
+        android:fontFamily="serif"
         android:gravity="center"
         android:shadowColor="@color/colorDarkBackground"
         android:shadowDx="2"
         android:shadowDy="2"
         android:shadowRadius=".01"
         android:text="@string/app_name"
-        android:textColor="@color/colorAccent"
-        android:textSize="70sp"
-        android:textStyle="bold" />
+        android:textColor="@color/colorBlack"
+        android:textSize="70sp" />
 </RelativeLayout>

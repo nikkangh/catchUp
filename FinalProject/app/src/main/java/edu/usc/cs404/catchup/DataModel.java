@@ -38,34 +38,42 @@ public class DataModel implements Serializable {
 
     private final static String TAG = DataModel.class.getSimpleName();
     private final String token = "Bearer tWAipkg4xbWWob7UL4FOB1WCpYjULYS8YTZE4UATW60-wHE5SuAbCrrQj_EBc0x5OhujYfLqnVQZ6pfi2itHglfkPv4kCn6ObEJxgUSmP0qbVJV7gcNAFlCp5tOhWnYx";
-    private final String initialURL = "https://api.yelp.com/v3/businesses/search?location=losangeles&latitude=34.022564&longitude=-118.290867&term=food";
+    private final String initialURL = "https://api.yelp.com/v3/businesses/search?location=losangeles&latitude=34.022564&longitude=-118.290867&term=";
+
 
     Context context;
     ArrayList<LocationObject> finalList;
 
+    private String[] terms = {"most+reviewed+restaurant", "best+bars+in+downtown", "arts+and+entertainment", "adventure+activities", "active+life", "date+ideas", "arcades+and+laser+tag", "coffee+tea", "fun+things+to+do"};
+    private String[] preferences = {"Foodie", "Nightlife", "Culture", "Adventure", "Outdoors", "Romantic", "Kid Again", "Caffeine", "Surprise Me"};
+    private boolean[] selected = {false, false, false, false, false, false, false, false, false};
 
-    ArrayList<SurveyItem> currItems;
-    ArrayList<SurveyItem> newItems;
-    HashMap<SurveyItem, ArrayList<LocationObject>> itemToLocation;
+    //ArrayList<SurveyItem> currItems;
+    //ArrayList<SurveyItem> newItems;
+    HashMap<String, ArrayList<LocationObject>> itemToLocations;
 
     private RequestQueue queue;
 
-    private FirebaseUser firebaseUser;
-    private DatabaseReference databaseReference;
+    //private FirebaseUser firebaseUser;
+    //private DatabaseReference databaseReference;
 
     public static DataModel getInstance() {
         return ourInstance;
     }
 
-    public void setContext(Context context) { this.context = context; }
+    public void setContext(Context context) {
+        this.context = context;
+        if (context instanceof LoadingActivity) {
+            selectTerm(0);
+        }
+    }
 
     private DataModel() {
         finalList = new ArrayList<LocationObject>();
-        currItems = new ArrayList<SurveyItem>();
-        newItems = new ArrayList<SurveyItem>();
-        itemToLocation = new HashMap<SurveyItem, ArrayList<LocationObject>>();
+        itemToLocations = new HashMap<String, ArrayList<LocationObject>>();
 
-        databaseReference = FirebaseDatabase.getInstance().getReference(); //get instance of database
+        //getDataForTerm(preferences[0]);
+        /*databaseReference = FirebaseDatabase.getInstance().getReference(); //get instance of database
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser(); //get your information
         databaseReference = databaseReference.child(firebaseUser.getUid()).child("surveyItems");
         if (databaseReference == null) {
@@ -98,10 +106,10 @@ public class DataModel implements Serializable {
             public void onCancelled(DatabaseError databaseError) {
                 System.out.println("The read failed: " + databaseError.getCode());
             }
-        });
+        });*/
     }
 
-    public void reloadData() {
+    /*public void reloadData() {
         for (int i = 0; i < newItems.size(); i++) {
             //find if item exists already
             int foundIndex = -1;
@@ -130,10 +138,32 @@ public class DataModel implements Serializable {
             currItems.add(newItems.get(i));
         }
         newItems.clear();
+    }*/
+
+    public void selectTerm(int index) {
+        selected[index] = true;
+        if (!itemToLocations.containsKey(terms[index])) {
+            getDataForTerm(terms[index]);
+        } else {
+            updateList();
+        }
     }
 
-    public void getDataForTerm (final SurveyItem item) {
-        String url = initialURL + "+" + item.getDesc();
+    public void unSelectTerm(int index) {
+        selected[index] = false;
+        updateList();
+    }
+
+    public boolean isSelected(int index) {
+        return selected[index];
+    }
+
+    public String getString(int index) {
+        return preferences[index];
+    }
+
+    public void getDataForTerm (final String term) {
+        String url = initialURL + "+" + term;
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url.trim(),
                 new Response.Listener<String>() {
                     @Override
@@ -243,7 +273,7 @@ public class DataModel implements Serializable {
                             }
 
                             newLocs.sort(new LocComparator());
-                            addData(item, newLocs);
+                            addData(term, newLocs);
                         } catch (JSONException e) {
                             Log.d(TAG, "onErrorResponse: " + e.getMessage());
                         }
@@ -266,24 +296,33 @@ public class DataModel implements Serializable {
         queue.add(stringRequest);
     }
 
-    private void addData(SurveyItem item, ArrayList<LocationObject> newLocs) {
-        itemToLocation.put(item, newLocs);
-
-        update();
+    private void addData(String term, ArrayList<LocationObject> newLocs) {
+        itemToLocations.put(term, newLocs);
+        updateList();
     }
 
-    public void update() {
+    public void updateList() {
         //remake final list
-        finalList.clear();
         Set<LocationObject> removeDuplicates = new HashSet<LocationObject>();
-        for (ArrayList<LocationObject> curr: itemToLocation.values()) {
-            //finalList.addAll(curr);
-            removeDuplicates.addAll(curr);
+        for (int i = 0; i < 9; i++) {
+            if (selected[i] && itemToLocations.containsKey(terms[i])) {
+                removeDuplicates.addAll(itemToLocations.get(terms[i]));
+            }
         }
+
+        /*for (ArrayList<LocationObject> curr: itemToLocations.values()) {
+            removeDuplicates.addAll(curr);
+        }*/
+
+        finalList.clear();
         finalList.addAll(removeDuplicates);
         finalList.sort(new LocComparator());
+        //MainActivity.update();
 
-        MainActivity.update();
+        if (context instanceof LoadingActivity) {
+            Intent i = new Intent(context, HomeActivity.class);
+            context.startActivity(i);
+        }
     }
 
 
@@ -307,8 +346,4 @@ public class DataModel implements Serializable {
         return finalList.get(index);
     }
 
-    private void redirect() {
-        Intent i = new Intent(context, SurveyActivity.class);
-        context.startActivity(i);
-    }
 }

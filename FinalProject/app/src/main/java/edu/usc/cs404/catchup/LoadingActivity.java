@@ -22,7 +22,7 @@ public class LoadingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_loading);
 
-        Intent i = getIntent();
+        /*Intent i = getIntent();
         email = i.getStringExtra(LogInActivity.EXTRA_EMAIL);
         password = i.getStringExtra(LogInActivity.EXTRA_PASSWORD);
         Boolean newAccount = i.getBooleanExtra(LogInActivity.EXTRA_NEWACCOUNT, true);
@@ -73,6 +73,8 @@ public class LoadingActivity extends AppCompatActivity {
                     }
                 });
 
-        }
+        }*/
+
+        DataModel.getInstance().setContext(LoadingActivity.this);
     }
 }

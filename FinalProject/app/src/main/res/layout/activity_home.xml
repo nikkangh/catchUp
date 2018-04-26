@@ -11,9 +11,11 @@
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentTop="true"/>
+        android:layout_alignParentTop="true"
+        android:layout_above="@id/bottomBar"/>
 
     <Button
+        android:id="@+id/name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
@@ -21,7 +23,7 @@
         android:text="TRADER JOE'S"
         android:padding="35dp"
         android:gravity="center"
-        android:background="@color/transparentWhite"
+        android:background="@color/colorWhite"
         android:shadowColor="@color/transparentWhite"
         android:textColor="@color/colorBlack"
         android:fontFamily="serif"
@@ -29,20 +31,23 @@
         android:layout_margin="30dp"/>
 
     <RelativeLayout
+        android:id="@+id/bottomBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true"
-        android:background="@color/transparentWhite">
+        android:background="@color/colorWhite">
 
         <ImageButton
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:src="@drawable/gear"
-        android:background="#00ffffff"
-        android:layout_alignParentStart="true"/>
+            android:id="@+id/settings"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/gear"
+            android:background="#00ffffff"
+            android:layout_alignParentStart="true"/>
 
         <Button
+            android:id="@+id/distance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="0.5 mi"
@@ -53,6 +58,7 @@
             />
 
         <ImageButton
+            android:id="@+id/retry"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:src="@drawable/redo"
