@@ -1,16 +1,13 @@
 package edu.usc.cs404.catchup;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
-import android.net.Uri;
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -22,78 +19,27 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
-import java.util.Random;
 
+public class HomeActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener{
+    public static final String EXTRA_MARKERTAG = "edu.usc.cs404.catchup.markertag";
+    private final static String TAG = HomeActivity.class.getSimpleName();
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link MapFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link MapFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener{
-    private final static String TAG = MapFragment.class.getSimpleName();
 
     private GoogleMap mMap;
-    private Button pick;
     private ArrayList<LocationObject> markerPoints;
 
-    public MapFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment MapFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static MapFragment newInstance(String param1, String param2) {
-        MapFragment fragment = new MapFragment();
-        return fragment;
-    }
-
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-        }
-    }
+        setContentView(R.layout.activity_home);
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_map, container, false);
-        markerPoints = DataModel.getInstance().getData();
-
-        SupportMapFragment mapFragment = (SupportMapFragment) this.getChildFragmentManager()
+        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        pick = (Button) v.findViewById(R.id.pick);
-        pick.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Random rand = new Random();
-
-                // nextInt is normally exclusive of the top value,
-                // so add 1 to make it inclusive
-                int randomNum = rand.nextInt(DataModel.getInstance().getDataCount());
-
-                Intent i = new Intent(getContext(), DetailsActivity.class);
-                i.putExtra(ListFragment.EXTRA_INDEX, randomNum);
-                startActivity(i);
-            }
-        });
-
         //Intent intent = getIntent();
-        return v;
+        //markerPoints = DataModel.getInstance().getData();
     }
 
     /**
@@ -114,7 +60,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
             // in a raw resource file.
             boolean success = googleMap.setMapStyle(
                     MapStyleOptions.loadRawResourceStyle(
-                            getContext(), R.raw.style_json));
+                            this, R.raw.style_json));
 
             if (!success) {
                 Log.e(TAG, "Style parsing failed.");
@@ -122,8 +68,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
         } catch (Resources.NotFoundException e) {
             Log.e(TAG, "Can't find style. Error: ", e);
         }
+        //LatLng fll = new LatLng(markerPoints.get(0).latitude,markerPoints.get(0).longitude);
 
-        mMap.setOnInfoWindowClickListener(this);
+        /*mMap.setOnInfoWindowClickListener(this);
         // Add a marker in Sydney and move the camera
 //        LatLng sydney = new LatLng(-34, 151);
 //        LatLng MELBOURNE = new LatLng(-37.81319, 144.96298);
@@ -133,8 +80,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
 //                .title("Melbourne")
 //                .snippet("Population: 4,137,400"));
 //        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
-        //String firstLoc = markerPoints.get(0).restaurantName;
-        LatLng fll = new LatLng(34.022564, -118.290867);
+        String firstLoc = markerPoints.get(0).restaurantName;
+        LatLng fll = new LatLng(markerPoints.get(0).latitude,markerPoints.get(0).longitude);
         for (int i = 0; i < markerPoints.size(); i++) {
             String name = markerPoints.get(i).restaurantName;
             LatLng point = new LatLng(markerPoints.get(i).latitude,markerPoints.get(i).longitude);
@@ -144,18 +91,18 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
                     .snippet("Click for more info")
             );
             marker.setTag(i);
-        }
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(fll, 11));
+        }*/
+        //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(fll, 11));
     }
 
     @Override
     public void onInfoWindowClick(Marker marker) {
-        Intent i = new Intent(getContext(), DetailsActivity.class);
-        i.putExtra(ListFragment.EXTRA_INDEX, (int)(marker.getTag()));
-        startActivity(i);
-    }
+        //System.out.println("Infowindow being clicked");
+        Intent i = new Intent(HomeActivity.this, DetailsActivity.class);
 
-    static public void update() {
-        //possibly set marker vals?
+        i.putExtra(EXTRA_MARKERTAG, (int)(marker.getTag()));
+        //TODO: Add functionality to go to Activity page
+        startActivity(i);
+
     }
 }

@@ -23,7 +23,7 @@
                                           <PersistentState>
                                             <option name="values">
                                               <map>
-                                                <entry key="scalingPercent" value="104" />
+                                                <entry key="scalingPercent" value="109" />
                                                 <entry key="trimmed" value="true" />
                                               </map>
                                             </option>
@@ -36,7 +36,7 @@
                                     <map>
                                       <entry key="backgroundAssetType" value="COLOR" />
                                       <entry key="backgroundColor" value="faf2bd" />
-                                      <entry key="foregroundImage" value="$PROJECT_DIR$/../../play/ic_launcher_APP.png" />
+                                      <entry key="foregroundImage" value="$USER_HOME$/Downloads/Icon.png" />
                                       <entry key="previewDensity" value="XXXHIGH" />
                                     </map>
                                   </option>

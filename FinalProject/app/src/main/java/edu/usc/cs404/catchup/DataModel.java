@@ -42,6 +42,8 @@ public class DataModel implements Serializable {
 
     Context context;
     ArrayList<LocationObject> finalList;
+
+
     ArrayList<SurveyItem> currItems;
     ArrayList<SurveyItem> newItems;
     HashMap<SurveyItem, ArrayList<LocationObject>> itemToLocation;

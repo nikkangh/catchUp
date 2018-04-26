@@ -15,7 +15,8 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.NoActionBar">
-        <activity android:name=".LogInActivity">
+        <activity android:name=".LogInActivity" />
+        <activity android:name=".SettingsActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -54,10 +55,14 @@
         <activity
             android:name=".MapsActivity"
             android:label="AIzaSyBTtMOPiMwtXKfj9M5ZwnyaeGL9sieNht8" />
-        <activity android:name=".LoadingActivity"></activity>
-        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".LoadingActivity" />
+        <activity android:name=".MainActivity" />
 
-        <meta-data android:name="com.appsee.ApiKey" android:value="358887ca90bb44f7aa8c2d927a0d4c52" />
+        <meta-data
+            android:name="com.appsee.ApiKey"
+            android:value="358887ca90bb44f7aa8c2d927a0d4c52" />
+
+        <activity android:name=".HomeActivity"></activity>
     </application>
 
 </manifest>
