@@ -24,7 +24,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/title"
-        android:layout_above="@id/location_title"
+        android:layout_alignParentBottom="true"
         android:layout_marginTop="8dp"
         android:background="@color/colorWhite"
         >
@@ -128,43 +128,43 @@
         </GridLayout>
     </RelativeLayout>
 
-    <TextView
-        android:id="@+id/location_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/distance_title"
-        android:text="@string/location"
-        android:background="@color/colorWhite"
-        android:textColor="@color/colorBlack"
-        android:textSize="22sp"
-        android:fontFamily="serif-monospace"
-        android:gravity="left|center"
-        android:padding="16dp"
-        android:layout_marginTop="8dp"/>
+    <!--<TextView-->
+        <!--android:id="@+id/location_title"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_above="@id/distance_title"-->
+        <!--android:text="@string/location"-->
+        <!--android:background="@color/colorWhite"-->
+        <!--android:textColor="@color/colorBlack"-->
+        <!--android:textSize="22sp"-->
+        <!--android:fontFamily="serif-monospace"-->
+        <!--android:gravity="left|center"-->
+        <!--android:padding="16dp"-->
+        <!--android:layout_marginTop="8dp"/>-->
 
-    <TextView
-        android:id="@+id/distance_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/price_title"
-        android:text="@string/distance"
-        android:background="@color/colorWhite"
-        android:textColor="@color/colorBlack"
-        android:textSize="22sp"
-        android:fontFamily="serif-monospace"
-        android:gravity="left|center"
-        android:padding="16dp"/>
+    <!--<TextView-->
+        <!--android:id="@+id/distance_title"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_above="@id/price_title"-->
+        <!--android:text="@string/distance"-->
+        <!--android:background="@color/colorWhite"-->
+        <!--android:textColor="@color/colorBlack"-->
+        <!--android:textSize="22sp"-->
+        <!--android:fontFamily="serif-monospace"-->
+        <!--android:gravity="left|center"-->
+        <!--android:padding="16dp"/>-->
 
-    <TextView
-        android:id="@+id/price_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/price"
-        android:background="@color/colorWhite"
-        android:textColor="@color/colorBlack"
-        android:textSize="22sp"
-        android:fontFamily="serif-monospace"
-        android:gravity="left|center"
-        android:padding="16dp"
-        android:layout_alignParentBottom="true"/>
+    <!--<TextView-->
+        <!--android:id="@+id/price_title"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="@string/price"-->
+        <!--android:background="@color/colorWhite"-->
+        <!--android:textColor="@color/colorBlack"-->
+        <!--android:textSize="22sp"-->
+        <!--android:fontFamily="serif-monospace"-->
+        <!--android:gravity="left|center"-->
+        <!--android:padding="16dp"-->
+        <!--android:layout_alignParentBottom="true"/>-->
 </RelativeLayout>
