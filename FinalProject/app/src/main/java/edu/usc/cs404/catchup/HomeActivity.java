@@ -26,6 +26,9 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.util.ArrayList;
 import java.util.Random;
 
+import com.appsee.Appsee;
+
+
 public class HomeActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener{
     public static final String EXTRA_MARKERTAG = "edu.usc.cs404.catchup.markertag";
     private final static String TAG = HomeActivity.class.getSimpleName();
@@ -46,6 +49,9 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        Appsee.setDebugToLogcat(true);
+        Appsee.start();
 
         DataModel.getInstance().setContext(HomeActivity.this);
 
